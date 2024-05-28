@@ -3,7 +3,8 @@ import random
 class Table:
 
     def __init__(self):
-        self.tile_colors = ['red', 'black', 'blue', 'yellow']
+        #termcolor the library being used to color text does not have a 'black' color so 'green' is used instead
+        self.tile_colors = ['red', 'green', 'blue', 'yellow']
         self.tile_values = list(range(1, 14))
         self.pool = []  # This will store the list of tiles
         self.sets = []  # This will store valid sets placed on the table
@@ -46,7 +47,7 @@ class Table:
         
         tile = self.sets[set_index].pop(tile_index)
         self.manipulated_tiles.append(tile)
-        
+
     # Similiar to the move_tile_to_manipulated, place_tile_from_manipulated is 
     # tasked with taking a tile from the holding list 'manipulated_tiles' and 
     # placing it into a chosen position in the 'sets' list
