@@ -41,6 +41,10 @@ class Tile:
         Check if the tile is valid.
         :return: True if the tile has valid attributes, False otherwise.
         """
-        valid_numbers = list(range(1, 14)) + [None]
-        valid_colors = ['red', 'blue', 'orange', 'black', None]
+        if self.is_joker:
+            # Joker tiles must have color=None and number=None
+            return self.color is None and self.number is None
+
+        valid_numbers = list(range(1, 14))
+        valid_colors = ['red', 'blue', 'orange', 'black']
         return self.number in valid_numbers and self.color in valid_colors

@@ -8,6 +8,13 @@ class Board:
             raise ValueError("Invalid tile set")
         self.sets.append(tile_set)
 
+    def add_to_set(self, set_index, tile_set):
+        if set_index < 0 or set_index >= len(self.sets):
+            raise IndexError("Invalid set index")
+        updated_set = self.sets[set_index] + tile_set
+        if not self.is_valid_set(updated_set):
+            raise ValueError("Adding these tiles results in an invalid set")
+        self.sets[set_index] = updated_set
 
     def is_valid_set(self, tile_set):
         """
