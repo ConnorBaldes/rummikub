@@ -4,15 +4,13 @@
 
 ### Objective
 The goal of Rummikub is to be the first player to eliminate all tiles from your rack by forming valid sets (groups or runs) on the table. The game ends when a player empties their rack or when no more moves can be made.
-- [ ] Task 1
-- [x] Task 2
-- [ ] Task 3
+
 ### Game Setup
-- [ ] 1. Players: 2–4 players. - [ ]
-2. Tiles: 106 tiles numbered 1 to 13 in four colors: red, blue, yellow, and black. There are two identical tiles for each number and color. There are also two jokers.
-3. Rack: Each player uses a rack to hold their tiles.
-4. Tile Distribution:
-    - Shuffle all tiles face down on the table.
+- [ ] 1. Players: 2–4 players. 
+- [ ] 2. Tiles: 106 tiles numbered 1 to 13 in four colors: red, blue, yellow, and black. There are two identical tiles for each number and color. There are also two jokers.
+- [ ] 3. Rack: Each player uses a rack to hold their tiles.
+- [ ] 4. Tile Distribution:
+    - - [ ]Shuffle all tiles face down on the table.
     - Each player draws 14 tiles and places them on their rack.
     - The remaining tiles form a pool in the center, known as the draw pile.
 
