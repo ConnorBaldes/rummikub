@@ -1,7 +1,11 @@
 # Rummikub
 
-## Game Rules
+## Introduction
+Welcome to my Rummikub project! This repository contains the Python implementation of the popular tile-based game, Rummikub. In this project, I am building the game from scratch, following the traditional rules and mechanics of Rummikub. The README provides an overview of the game, including the official rules and explanations of core gameplay elements.
 
+The rules and functionalities of the game are listed below, with checkboxes next to each item. These checkboxes help track the progress of the implementation, allowing you to see which features are completed and which are still in progress. As the development continues, this README will serve as both a guide to the game’s rules and a progress tracker for the ongoing work in the project.
+
+## Game Rules
 ### Objective
 The goal of Rummikub is to be the first player to eliminate all tiles from your rack by forming valid sets (groups or runs) on the table. The game ends when a player empties their rack or when no more moves can be made.
 
@@ -66,7 +70,7 @@ There are two types of valid sets:
     - [ ] Players may agree to a time limit for turns to keep the game moving.
 
 
-### Project File Structure:
+## Project File Structure:
 ```
 rummikub/
 ├── main.py              # Entry point for the game
