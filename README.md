@@ -10,7 +10,7 @@ The goal of Rummikub is to be the first player to eliminate all tiles from your 
 - [ ] 2. Tiles: 106 tiles numbered 1 to 13 in four colors: red, blue, yellow, and black. There are two identical tiles for each number and color. There are also two jokers.
 - [ ] 3. Rack: Each player uses a rack to hold their tiles.
 - [ ] 4. Tile Distribution:
-    - - [ ]Shuffle all tiles face down on the table.
+    - [ ] Shuffle all tiles face down on the table.
     - Each player draws 14 tiles and places them on their rack.
     - The remaining tiles form a pool in the center, known as the draw pile.
 
