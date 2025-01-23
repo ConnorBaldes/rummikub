@@ -1,6 +1,7 @@
 from rummikub.deck import Deck
 from rummikub.board import Board
 from rummikub.player import Player
+from rummikub.display import display_board, display_tiles, display_tile
 
 class Game:
     def __init__(self, players):
@@ -23,11 +24,12 @@ class Game:
         """
         current_player = self.players[self.current_player_index]
         print(f"\n{current_player.name}'s turn")
-        print(f"Your hand: {current_player.hand}")
+        print(f"Your hand: {display_tiles(current_player.hand)}")
 
         while True:
             # Display the current board state
-            print(f"Current board: {self.board}")
+            print("Current board:")
+            display_board(self.board)  # Use display module
 
             # Get player input for their action
             action = input("Choose an action: (play, draw, pass): ").strip().lower()
@@ -80,6 +82,6 @@ class Game:
         if not self.deck.is_empty():
             tile = self.deck.draw_tile()
             player.hand.append(tile)
-            print(f"{player.name} drew a tile: {tile}")
+            print(f"{player.name} drew a tile: {display_tile(tile)}")
         else:
             print("The deck is empty. No tiles to draw.")

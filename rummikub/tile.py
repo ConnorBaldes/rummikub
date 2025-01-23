@@ -17,7 +17,7 @@ class Tile:
         """
         if self.is_joker:
             return "Tile(Joker)"
-        return f"Tile({self.number}, {self.color})"
+        return f"({self.number}, {self.color}, {self.is_joker})"
     
     def __eq__(self, other):
         """
