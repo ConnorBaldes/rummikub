@@ -9,15 +9,18 @@ class Player:
         """
         self.name = name
         self.hand = []
+        self.initial_meld = False
 
-    def draw_tile(self, deck):
+    def draw_tile(self, deck) -> Tile:
         """
         Draw a tile from the deck and add it to the player's hand.
         :param deck: The Deck instance to draw from.
+        : return: The tile object drawn from the deck(for game start)
         """
         tile = deck.draw_tile()
         if tile:
             self.hand.append(tile)
+        return tile
 
     def play_tiles(self, tiles):
         """
@@ -35,4 +38,4 @@ class Player:
         String representation of the player for debugging.
         :return: A string describing the player's name and hand.
         """
-        return f"Player({self.name}, Hand: {self.hand})"
+        return f"Player({self.name}, Hand: {self.hand}, Initial Meld: {self.initial_meld})"

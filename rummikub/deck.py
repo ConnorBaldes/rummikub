@@ -1,4 +1,5 @@
 import random
+from typing import Optional
 from rummikub.tile import Tile
 
 class Deck:
@@ -28,7 +29,7 @@ class Deck:
         """
         random.shuffle(self.tiles)
 
-    def draw_tile(self):
+    def draw_tile(self) -> Optional[Tile]:
         """
         Draw a tile from the deck.
         :return: A Tile object if the deck is not empty, otherwise None.

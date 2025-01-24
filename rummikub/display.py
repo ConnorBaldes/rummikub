@@ -5,7 +5,7 @@ def display_tile(tile):
     Return a string representation of a single tile with its color applied.
     """
     if tile.is_joker:
-        return colored("Joker", "white", attrs=["bold"])
+        return colored("[J]", "white", attrs=["bold"])
     color_map = {
         "red": "red",
         "blue": "blue",
@@ -13,7 +13,7 @@ def display_tile(tile):
         "black": "grey",
     }
     color = color_map.get(tile.color, "white")
-    return colored(f"{tile.number}", color)
+    return colored(f"[{tile.number}]", color)
 
 def display_tiles(tiles):
     """
