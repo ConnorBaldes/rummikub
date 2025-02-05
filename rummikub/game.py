@@ -1,3 +1,4 @@
+import copy
 from rummikub.deck import Deck
 from rummikub.board import Board
 from rummikub.player import Player
@@ -9,177 +10,154 @@ class Game:
         self.board = Board()
         self.players = [Player(name) for name in players]
         self.current_player_index = 0
-
+        self.saved_state = None  # Stores the saved state for rollback
 
     def start(self):
-        """
-        Initialize the game by determining turn order and dealing tiles to players.
-        Each player picks a single tile to decide the turn order.
-        """
+        """Initialize the game, determine turn order, and deal tiles."""
         self._determine_turn_order()
         self._deal_tiles()
 
     def _determine_turn_order(self):
-        """
-        Each player draws a single tile to decide the turn order.
-        """
+        """Decide turn order by drawing a tile."""
         turn_order = []
         for player in self.players:
             tile = player.draw_tile(self.deck)
             print(f"{player.name} picked {display_tile(tile)}")
             turn_order.append((player, tile))
 
-        # Sort players by tile value, with Joker beating all numbers
         turn_order.sort(key=lambda x: (x[1].is_joker, x[1].number), reverse=True)
-
-        # Reorder players based on the sorted turn order
         self.players = [entry[0] for entry in turn_order]
+
         print("Turn order decided:")
         for i, player in enumerate(self.players, 1):
             print(f"{i}. {player.name}")
 
     def _deal_tiles(self):
-        """
-        Deal the remaining tiles to players.
-        """
+        """Deal 13 tiles to each player."""
         for player in self.players:
-            for _ in range(13):  # 14 total tiles minus the one already picked
+            for _ in range(13):
                 player.draw_tile(self.deck)
 
+    def save_state(self):
+        """Save a deep copy of the game state at the start of a turn."""
+        self.saved_state = {
+            "player_hand": copy.deepcopy(self.players[self.current_player_index].hand),
+            "player_initial_meld": self.players[self.current_player_index].initial_meld,
+            "board_sets": copy.deepcopy(self.board.sets),
+            "staging": copy.deepcopy(self.board.staging),
+            "deck_tiles": copy.deepcopy(self.deck.tiles),
+        }
+
+    def restore_state(self):
+        """Restore the game state from the last saved snapshot."""
+        if self.saved_state:
+            self.players[self.current_player_index].hand = self.saved_state["player_hand"]
+            self.players[self.current_player_index].initial_meld = self.saved_state["player_initial_meld"]
+            self.board.sets = self.saved_state["board_sets"]
+            self.board.staging = self.saved_state["staging"]
+            self.deck.tiles = self.saved_state["deck_tiles"]
+            print("❌ Invalid move detected. Board reset to previous state.")
+
     def next_turn(self):
-        """
-        Handle the flow of a player's turn.
-        """
+        """Handle a player's turn, allowing full board manipulation."""
         current_player = self.players[self.current_player_index]
         print(f"\n{current_player.name}'s turn")
-        print(f"Your hand: {display_tiles(current_player.hand)}")
+        
+        # Save the initial game state
+        self.save_state()
 
         while True:
-            # Display the current board state
-            print("Current board:")
-            display_board(self.board)  # Use display module
+            print("\n🔹 Current Board:")
+            display_board(self.board)
 
-            # Get player input for their action
-            action = input("Choose an action: (play, draw): ").strip().lower()
-            move_made = False
-            while action == "play":
-                if self._handle_play(current_player):
-                    move_made = True
-                    print("Current board:")
-                    display_board(self.board)
-                    print(f"Your hand: {display_tiles(current_player.hand)}")
-                    action = input("Would you like to play more tiles or pass: (play, pass): ").strip().lower()
-                elif move_made:
-                    action = input("Would you like to try a different move or pass: (play, pass): ").strip().lower()
-                else:
-                    action = input("Would you like to try a different move or draw: (play, draw): ").strip().lower()
-                    
-            if action == "draw":
-                self._handle_draw(current_player)
-                break
-            elif action == "pass":
-                print(f"{current_player.name} passes")
-                break
+            print(f"\n🔸 Your Hand: {display_tiles(current_player.hand, numbered=True)}")
+
+            # Player manipulates the board freely
+            self._handle_board_manipulation(current_player)
+
+            # Validate the board and the move
+            if self._validate_turn(current_player):
+                break  # Move is valid, proceed to next turn
             else:
-                print("Invalid action.")
+                self.restore_state()  # Restore game state and retry
 
         # Move to the next player's turn
         self.current_player_index = (self.current_player_index + 1) % len(self.players)
 
-    def _handle_play(self, player) -> bool:
-        """
-        Handle a player's attempt to play tiles onto the board.
-        """
+    def _handle_board_manipulation(self, player):
+        """Let the player freely manipulate tiles before confirming their move."""
+        print("💡 You can freely move tiles between your hand, board, and staging area.")
+        print("🔄 Type 'done' when finished.")
+        
+        while True:
+            action = input("Enter a move (play/move/done): ").strip().lower()
+
+            if action == "done":
+                break
+            elif action == "play":
+                self._handle_play(player)
+            elif action == "move":
+                self._handle_move()
+            else:
+                print("Invalid input. Type 'play', 'move', or 'done'.")
+
+    def _handle_play(self, player):
+        """Allow the player to play tiles from their hand."""
         try:
-            # Ask the player to input the indices of tiles they want to play
-            indices = input("Enter the indices of the tiles to play (comma-separated): ")
+            indices = input("Enter tile indices to play (comma-separated): ")
             tile_indices = list(map(int, indices.split(',')))
             tiles_to_play = [player.hand[i] for i in tile_indices]
 
-            if player.initial_meld:
-                # Ask for target position on the board or create a new set
-                target = input("Play tiles in a new set or existing set? (new/existing): ").strip().lower()
-                if target == "new":
-                    self.board.add_set(tiles_to_play)
-                    player.play_tiles(tiles_to_play)
-                    print("Tiles successfully played as a new set.")
-                    return True  # Return True to tell next_turn() play was valid
-                elif target == "existing":
-                    set_index = int(input("Enter the index of the set to add tiles to: "))
-                    self.board.add_to_set(set_index, tiles_to_play)
-                    player.play_tiles(tiles_to_play)
-                    print("Tiles successfully added to the existing set.")
-                    return True
-                else:
-                    print("Invalid option. Tiles not played.")
-                    return False  # Return False to tell next_turn() play was not valid
-            
+            set_choice = input("Play tiles in a new set or existing set? (new/existing): ").strip().lower()
+            if set_choice == "new":
+                self.board.add_set(tiles_to_play)
+                player.play_tiles(tiles_to_play)
+            elif set_choice == "existing":
+                set_index = int(input("Enter set index to add tiles to: ")) - 1
+                self.board.add_to_set(set_index, tiles_to_play)
+                player.play_tiles(tiles_to_play)
             else:
-                    if self._initial_meld_valid(player, tiles_to_play):
-                        self.board.add_set(tiles_to_play)
-                        player.play_tiles(tiles_to_play)
-                        return True
-                    else:
-                        return False
+                print("Invalid choice. Try again.")
 
         except Exception as e:
-            print(f"Error during play: {e}")
-            return False
+            print(f"❌ Error: {e}")
 
-    def _handle_draw(self, player):
-        """
-        Handle a player drawing a tile from the deck.
-        """
-        if not self.deck.is_empty():
-            tile = self.deck.draw_tile()
-            player.hand.append(tile)
-            print(f"{player.name} drew a tile: {display_tile(tile)}")
-        else:
-            print("The deck is empty. No tiles to draw.")
-
-    def _initial_meld_valid(self, player, tiles_to_play) -> bool:
-        """
-        Check if the tiles selected by the player for the initial meld 
-        form a valid set and add up to at least 30 points, considering jokers.
-        """
+    def _handle_move(self):
+        """Allow moving tiles between board sets and staging area."""
         try:
+            print("\n🔄 Moving tiles between sets.")
+            src_set = int(input("Enter source set index (or 0 for staging area): ")) - 1
+            tile_index = int(input("Enter the tile index within the set: "))
+            dest_set = int(input("Enter destination set index (or 0 for staging area): ")) - 1
 
-            # Check if the selected tiles form a valid set on the board
-            if not self.board.is_valid_set(tiles_to_play):
-                print("Selected tiles do not form a valid set.")
-                return False
-
-            total_points = 0
-            for tile in tiles_to_play:
-                if tile.is_joker:
-                    # Handle joker by assuming it represents the largest value in the set
-                    max_value = self._get_max_value_in_set(tiles_to_play)
-                    total_points += max_value
-                else:
-                    total_points += tile.number
-
-            # Check if the sum of points is greater than or equal to 30
-            if total_points >= 30:
-                print(f"Initial meld is valid. Total points: {total_points}")
-                player.initial_meld = True
-                return True
+            if src_set == -1:
+                tile = self.board.staging.pop(tile_index)
             else:
-                print(f"Initial meld is invalid. Total points: {total_points}. Must be at least 30.")
-                return False
+                tile = self.board.sets[src_set].pop(tile_index)
 
-        except IndexError:
-            print("Error: Invalid tile indices.")
+            if dest_set == -1:
+                self.board.staging.append(tile)
+            else:
+                self.board.sets[dest_set].append(tile)
+
+            print("✅ Move successful.")
+
+        except Exception as e:
+            print(f"❌ Error: {e}")
+
+    def _validate_turn(self, player):
+        """Validate if the board is in a valid state after a player's turn."""
+        if not all(self.board.is_valid_set(s) for s in self.board.sets):
+            print("❌ Invalid board state. Some sets are incorrect.")
             return False
 
-    def _get_max_value_in_set(self, tiles_to_play):
-        """
-        Given a set of tiles, find the highest number that the joker can represent.
-        """
-        # Sort the tiles by their number (ignoring jokers)
-        non_joker_tiles = [tile for tile in tiles_to_play if not tile.is_joker]
-        if not non_joker_tiles:
-            return 0  # If no non-joker tiles, the joker cannot represent anything meaningful
+        if self.board.staging:
+            print("❌ The staging area must be empty before ending your turn.")
+            return False
 
-        sorted_tiles = sorted(non_joker_tiles, key=lambda tile: tile.number)
-        # The joker should represent the next valid number in the sequence
-        return sorted_tiles[-1].number + 1  # Joker represents the next number in the set
+        if not any(tile not in player.hand for s in self.board.sets for tile in s):
+            print("❌ You must play at least one tile from your hand.")
+            return False
+
+        print("✅ Move accepted. Next player's turn.")
+        return True

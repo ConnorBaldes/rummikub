@@ -1,6 +1,7 @@
 class Board:
     def __init__(self):
         self.sets = []
+        self.staging = []
 
     def add_set(self, tile_set):
         # Validate and add a new set
