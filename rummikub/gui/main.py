@@ -8,8 +8,6 @@ screen = pygame.display.set_mode((2400, 1800))
 
 # Title and Icon
 pygame.display.set_caption("Rummikub")
-icon = pygame.image.load('./icons/pngegg.png')
-pygame.display.set_icon(icon)
 
 # List to track sets of tiles
 sets = []
@@ -24,7 +22,8 @@ class Tile:
         self.num = num
         self.rect.x = x
         self.rect.y = y
-        self.current_set = None  # This will track which set the tile belongs to
+        self.current_set = None  # Track which set the tile belongs to
+        self.original_pos = (x, y)  # Store original position in case of collision
     
     def __repr__(self):
         return f'{self.num}'
@@ -35,71 +34,79 @@ class Tile:
 # Create initial tile instances
 x = 0
 for i in range(num_tiles):
-    tiles.append(Tile(f'./tiles/tile_{i+1}_red.png',i+1, x, 900))
+    tiles.append(Tile(f'./tiles/tile_{i+1}_red.png', i+1, x, 900))
     x += 200  # Move each tile by 200 pixels
 
-# Function to check if two tiles are close enough to form a set
-def check_proximity(tile1, tile2, threshold=170):
-    return abs(tile1.rect.x - tile2.rect.x) < threshold
-
 # Function to check if a dragged tile collides with any other tile
-def check_overlap(dragged_tile, threshold=140):
+def check_overlap(dragged_tile):
     for other_tile in tiles:
-        if other_tile != dragged_tile:
-            if dragged_tile.rect.colliderect(other_tile.rect):
-                return True
+        if other_tile != dragged_tile and dragged_tile.rect.colliderect(other_tile.rect):
+            return True  # Collision detected
     return False
 
 # Function to group tiles together into sets
-def update_sets():
-    global sets
+def update_sets(sets, moved_tile):
 
-    # For each tile, if it's not in any set, place it in its own set
-    for tile in tiles:
-        if tile.current_set is None:
-            new_set = [tile]
-            tile.current_set = new_set
-            sets.append(new_set)
+    # TO DO: When going from 3 in a set down to 1 then back to 3, only the 'moved_tile' and first valid occurance of 'other_tile'
+    #        are added to the new set. Need to change the creating of the new set, to check for tiles next to 'other_tile' or another
+    #        tile next to 'moved_tile'
 
-    # Merge sets that are close enough to each other
-    for tile in tiles:
-        for other_tile in tiles:
-            if tile != other_tile and check_proximity(tile, other_tile):
-                # If the two tiles are close enough, merge their sets
-                if tile.current_set != other_tile.current_set:
-                    # Remove the old sets before merging
-                    old_set = other_tile.current_set
-                    if old_set in sets:
-                        sets.remove(old_set)
-                    
-                    # Merge the sets
-                    new_set = tile.current_set + old_set
-                    tile.current_set = new_set
-                    for t in new_set:
-                        t.current_set = new_set
+    for other_tile in tiles:
+        if moved_tile != other_tile and abs(moved_tile.rect.x - other_tile.rect.x) < 170 and abs(moved_tile.rect.y - other_tile.rect.y) < 120:
+
+            if moved_tile.current_set != other_tile.current_set or (moved_tile.current_set == None and other_tile.current_set == None):
+
+                if moved_tile.current_set != None:
+                    if moved_tile.current_set in sets:
+                        sets.remove(moved_tile.current_set)
+                    moved_tile.current_set = None
+                if other_tile.current_set != None:
+
+                    print(f'Current Set: {other_tile.current_set}')
+                    (other_tile.current_set).append(moved_tile)
+                    print(f'Current Set: {other_tile.current_set}')
+                    moved_tile.current_set = other_tile.current_set
+                else:
+
+                    new_set = []
+                    new_set.append(moved_tile)
+                    new_set.append(other_tile)
                     sets.append(new_set)
+                    moved_tile.current_set = new_set
+                    other_tile.current_set = new_set
+                    
 
-    # Now, remove any individual sets that have been merged
-    sets = [s for s in sets if len(s) > 1]  # Remove any sets that only have one tile
-
-    # Check for tiles that are too far away from their current set and remove them
+    # Remove tiles that are too far from their set
     for current_set in sets:
         for tile in current_set:
-            # Check if this tile is too far away from the rest of the set
-            if all(check_proximity(tile, other_tile, threshold=200) == False for other_tile in current_set):
+            close = False      
+            for other_tile in current_set:
+                if  tile != other_tile and abs(tile.rect.x - other_tile.rect.x) < 220 and abs(tile.rect.y - other_tile.rect.y) < 180:
+                    close = True
+            if not close:
                 current_set.remove(tile)
                 tile.current_set = None
 
-# Function to draw all tiles and print active sets
+    # Remove single-tile sets
+    for curent_set in sets:
+        if len(current_set) < 2:
+            current_set[0].current_set = None
+            sets.remove(current_set)
+            
+                
+
+
+
+# Function to draw all tiles
 def draw_tiles():
     for tile in tiles:
         tile.draw_tile()
-    
 
 # Game loop
 running = True
-dragging = False
+dragging = None  # Track the tile being dragged
 offset_x, offset_y = 0, 0
+sets = []
 
 while running:
     for event in pygame.event.get():
@@ -110,41 +117,29 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             for tile in tiles:
                 if tile.rect.collidepoint(event.pos):
-                    dragging = True
+                    dragging = tile
                     offset_x = tile.rect.x - event.pos[0]
                     offset_y = tile.rect.y - event.pos[1]
+                    tile.original_pos = (tile.rect.x, tile.rect.y)  # Store initial position
 
         # Handle mouse button up (stop dragging)
         elif event.type == pygame.MOUSEBUTTONUP:
-            dragging = False
-            update_sets()  # After placing the tile, check and update the sets
-            print(f'Active Sets: {sets}')  # Print the active sets
+            if dragging:
+                if check_overlap(dragging):  
+                    dragging.rect.x, dragging.rect.y = dragging.original_pos  # Reset to original position if overlapping
+                else:
+                    update_sets(sets, dragging)  # Update sets after placement
+                    print(f'Active Sets: {sets}')  # Print active sets
+            dragging = None
 
         # Handle mouse motion (dragging tiles)
-        if dragging:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            for tile in tiles:
-                if tile.rect.collidepoint(event.pos):
-                    # Move the dragged tile
-                    tile.rect.x = mouse_x + offset_x
-                    tile.rect.y = mouse_y + offset_y
+        elif event.type == pygame.MOUSEMOTION and dragging:
+            dragging.rect.x = event.pos[0] + offset_x
+            dragging.rect.y = event.pos[1] + offset_y
 
-                    # Check for overlap and adjust if necessary (only for the dragged tile)
-                    if check_overlap(tile):
-                        # Revert to the previous position if overlapping
-                        tile.rect.x = offset_x
-                        tile.rect.y = offset_y
-                    else:
-                        # Boundary checks for tile movement
-                        if tile.rect.x <= 0:
-                            tile.rect.x = 0
-                        elif tile.rect.x >= 2260:
-                            tile.rect.x = 2260
-
-                        if tile.rect.y <= 0:
-                            tile.rect.y = 0
-                        elif tile.rect.y >= 1560:
-                            tile.rect.y = 1560
+            # Prevent movement outside the board
+            dragging.rect.x = max(0, min(2260, dragging.rect.x))
+            dragging.rect.y = max(0, min(1560, dragging.rect.y))
 
     # Draw Background
     screen.fill((0, 128, 0))  # Green background
@@ -156,4 +151,3 @@ while running:
     pygame.display.update()
 
 pygame.quit()
-
