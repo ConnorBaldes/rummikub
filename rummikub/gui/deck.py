@@ -20,7 +20,7 @@ class Tile:
         return f'{self.num}'
     
     def get_coordinates(self):
-        return (self.x, self.y)
+        return (self.rect.x, self.rect.y)
     
     def get_id(self):
         return (self.id)
@@ -50,6 +50,10 @@ class Deck:
                 x_cord += 185
 
         return tiles
+
+    def get_tile(self, id):
+
+        return 
 
     def get_tile_data(self, folder_path):
         pattern = re.compile(r"tile_(\d+)_(\w+)\.png")

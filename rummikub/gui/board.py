@@ -1,16 +1,77 @@
 import pygame
+import numpy as np
 from deck import Deck
 from deck import Tile
+from graph import Graph
+
+
+class DistanceMatrix:
+    """Efficiently computes and stores distances between tiles."""
+    def __init__(self, tiles):
+        self.tiles = tiles
+        self.size = len(tiles)
+        self.matrix = np.full((self.size, self.size), np.inf)  # Initialize with infinity
+        np.fill_diagonal(self.matrix, 0)  # Distance to itself is 0
+
+    def update_coordinates(self):
+        """Extract updated coordinates from tiles into a NumPy array."""
+        self.coordinates = np.array([self.tiles[tile].get_coordinates() for tile in self.tiles])
+
+    
+
+    def recompute_distances(self):
+        """Vectorized recomputation of all distances."""
+        self.update_coordinates()  # Refresh positions
+        indices = np.arange(self.size)
+        i, j = np.meshgrid(indices, indices, indexing='ij')
+
+        # Compute Euclidean distance efficiently
+        self.matrix = np.sqrt(((self.coordinates[i, 0] - self.coordinates[j, 0]) ** 2) +
+                              ((self.coordinates[i, 1] - self.coordinates[j, 1]) ** 2))
+
+    def print_matrix(self):
+        """Display the matrix for debugging."""
+        print(np.array_str(self.matrix, precision=2, suppress_small=True))
+
+
 
 class Board:
     def __init__(self):
 
         self.screen = pygame.display.set_mode((2400, 1800))
         self.deck = Deck()
+        self.distance_matrix = DistanceMatrix(self.deck.tiles)
+        self.tile_graph = self._build_graph()
         self.sets = []
 
     def set_title(self, title= "Rummikub"):
         pygame.display.set_caption(title)
+
+
+
+    def _build_graph(self):
+
+        tile_graph = Graph(len(self.deck.tiles))
+
+        for tile in range(len(self.deck.tiles)):
+            tile_graph.add_vertex_data(self.deck.tiles[tile].id, data= self.deck.tiles[tile])
+        for tile in range(len(self.deck.tiles)):
+            for other_tile in range(len(self.deck.tiles)):
+                if tile != other_tile:
+                    tile_graph.add_edge(self.deck.tiles[tile].id, self.deck.tiles[other_tile].id, 0)
+
+        return tile_graph
+
+
+    def update_distances(self):
+        
+        for edge in self.tile_graph.edges:
+            self.tile_graph.update_edge_weight(edge[1], edge[2], self.distance_matrix.matrix[edge[1], edge[2]])
+
+    def get_forests(self, max_weight= 175):
+
+        forests = self.tile_graph.kruskals_msf(max_weight)
+        self.tile_graph.print_forests(forests)
 
     def get_tile_positions(self):
 

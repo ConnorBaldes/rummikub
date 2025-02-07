@@ -99,8 +99,12 @@ while running:
                 if check_overlap(dragging):  
                     dragging.rect.x, dragging.rect.y = dragging.original_pos  # Reset to original position if overlapping
                 else:
-                    board.update_sets()  # Update sets after placement
-                    board.print_active_sets()
+                    board.distance_matrix.recompute_distances()
+                    board.distance_matrix.print_matrix()
+                    board.update_distances()
+                    board.get_forests()
+                    #board.update_sets()  # Update sets after placement
+                    #board.print_active_sets()
 
             dragging = None
 
