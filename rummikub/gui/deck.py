@@ -63,7 +63,6 @@ class Deck:
             match = pattern.match(filename)
             if match:
                 number, color = match.groups()
-                print(f'ID: {tile_id}, Number: {number}, Color: {color}, File Path: ./tiles/{filename}')
                 tile_data.append((int(tile_id), int(number), color, f'./tiles/{filename}'))  # Convert number to int
                 tile_id += 1
 

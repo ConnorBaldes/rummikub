@@ -1,4 +1,5 @@
 import pygame
+import math
 import numpy as np
 from deck import Deck
 from deck import Tile
@@ -38,7 +39,7 @@ class DistanceMatrix:
 class Board:
     def __init__(self):
 
-        self.screen = pygame.display.set_mode((2400, 1800))
+        self.screen = pygame.display.set_mode((3400, 2500))
         self.deck = Deck()
         self.distance_matrix = DistanceMatrix(self.deck.tiles)
         self.tile_graph = self._build_graph()
@@ -71,7 +72,46 @@ class Board:
     def get_forests(self, max_weight= 175):
 
         forests = self.tile_graph.kruskals_msf(max_weight)
-        self.tile_graph.print_forests(forests)
+        self.sets = []
+        for i, (vertices, edges) in enumerate(forests):
+            
+            self.snap_to_forests(vertices)
+            self.sets.append([self.tile_graph.vertex_data[v] for v in vertices])
+        
+        return forests
+
+
+    def snap_to_forests(self, vertices):
+
+        tile_positions = {v: self.tile_graph.vertex_data[v] for v in vertices}
+
+        for v in vertices:
+            x = tile_positions[v].rect.x
+            y = tile_positions[v].rect.y
+            min_dist = float(240) # closest existing tile in the same forest
+            closest_vertex = v
+
+            for u in vertices:
+                if u == v:
+                    continue
+                ux = tile_positions[u].rect.x
+                uy = tile_positions[u].rect.y
+                dist = math.sqrt((x - ux) ** 2 + (y - uy) ** 2)
+                if dist < min_dist:
+                    min_dist = dist
+                    closest_vertex = u
+
+            # Snap to the closest vertex
+            if closest_vertex != v:
+                if self.deck.tiles[closest_vertex].rect.x > self.deck.tiles[v].rect.x:
+                    self.deck.tiles[v].rect.x = (self.deck.tiles[closest_vertex].rect.x) - 141
+                    self.deck.tiles[v].rect.y = (self.deck.tiles[closest_vertex].rect.y)
+                elif self.deck.tiles[closest_vertex].rect.x < self.deck.tiles[v].rect.x:
+                    self.deck.tiles[v].rect.x = (self.deck.tiles[closest_vertex].rect.x) + 141
+                    self.deck.tiles[v].rect.y = (self.deck.tiles[closest_vertex].rect.y)
+                
+
+
 
     def get_tile_positions(self):
 
@@ -82,7 +122,10 @@ class Board:
     
     def get_tile_position(self, tile):
         return (self.deck.tiles[tile].rect.x, self.deck.tiles[tile].rect.y)
-            
+
+
+
+
     def are_close(self, tile1, tile2, x=170, y=70):
         x1, y1 = self.get_tile_position(tile1)
         x2, y2 = self.get_tile_position(tile2)
