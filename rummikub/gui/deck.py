@@ -6,6 +6,7 @@ import re
 
 # Tile class to represent each tile
 class Tile:
+    
     def __init__(self, id, num, color, image, x, y):
         self.id = id
         self.image = pygame.image.load(image)
