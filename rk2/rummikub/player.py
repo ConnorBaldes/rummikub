@@ -1,5 +1,5 @@
-from tile import Tile
-from deck import Deck
+from rummikub.tile import Tile
+from rummikub.deck import Deck
 from typing import List, Type, Dict, Iterator
 
 class Player:

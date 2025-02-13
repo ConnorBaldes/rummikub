@@ -1,4 +1,4 @@
-from tile import Tile
+from rummikub.tile import Tile
 from typing import Type, List, Tuple
 import re
 import os
@@ -24,18 +24,18 @@ class Deck:
             raise TypeError(f"Cannot compare Deck length with {type(other).__name__}")    
         return len(self.tiles) < other
 
-    def __le__(self, other) –> bool:
+    def __le__(self, other) -> bool:
         
         if not isinstance(other, int):
             raise TypeError(f"Cannot compare Deck length with {type(other).__name__}")   
         return len(self.tiles) <= other
     
-    def __gt__(self, other) –> bool:
+    def __gt__(self, other) -> bool:
         if not isinstance(other, int):
             raise TypeError(f"Cannot compare Deck length with {type(other).__name__}")     
         return len(self.tiles) > other
     
-    def __ge__(self, other) –> bool:
+    def __ge__(self, other) -> bool:
         if not isinstance(other, int):
             raise TypeError(f"Cannot compare Deck length with {type(other).__name__}")   
         return len(self.tiles) >= other
@@ -65,7 +65,7 @@ class Deck:
         return tile_data
 
     def _initialize_tiles(self) -> List[Tile]:
-        tile_files = self._get_tile_images(self)
+        tile_files = self._get_tile_images()
         tiles = []
 
         for tile in tile_files:

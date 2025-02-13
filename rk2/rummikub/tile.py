@@ -9,6 +9,7 @@ class Tile:
         self.number = number
         self.color = color
         self.image: pygame.Surface = pygame.image.load(image_path)
+        self.rect = self.image.get_rect()
         self.rect.x = None
         self.rect.y = None
 
