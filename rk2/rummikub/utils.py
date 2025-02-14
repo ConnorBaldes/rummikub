@@ -1,122 +1,127 @@
 
+import numpy as np
+import pygame
+from typing import Dict, Tuple, List
+from rummikub.tile import Tile
+
 class Graph:
-    def __init__(self, size):
-        self.size = size
-        self.edges = []  # List of edges (weight, u, v)
-        self.vertex_data = [''] * size  # Store vertex names
-        self.edge_map = {}  # Fast lookup for edge weights
+    """Optimized adjacency matrix representation of the playing board."""
 
-    def add_edge(self, u, v, weight):
-        if 0 <= u < self.size and 0 <= v < self.size:
-            self.edges.append((weight, u, v))  # Store (weight, u, v)
-            self.edge_map[(u, v)] = weight
-            self.edge_map[(v, u)] = weight  # Undirected graph
+    def __init__(self, max_size: int):
+        self.size = max_size
+        
+        # NumPy matrix for edge weights (stores Euclidean distances)
+        self.matrix = np.full((self.size, self.size), np.inf)
+        np.fill_diagonal(self.matrix, 0)  # Distance to itself is always 0
 
-    def update_edge_weight(self, u, v, new_weight):
-        """ Updates the weight of an existing edge efficiently. """
-        if (u, v) in self.edge_map:
-            self.edge_map[(u, v)] = new_weight
-            self.edge_map[(v, u)] = new_weight
+        # NumPy array for tile data (indexed by tile_id)
+        self.vertex_data = np.full((self.size, 3), -1, dtype=int)  # Uninitialized state (-1)
 
-            # Update the edge list in O(E) time
-            for i in range(len(self.edges)):
-                weight, node1, node2 = self.edges[i]
-                if (node1, node2) == (u, v) or (node1, node2) == (v, u):
-                    self.edges[i] = (new_weight, u, v)
-                    break
-        else:
-            print(f"Edge {u}-{v} does not exist.")
+        # Stack of tiles on the board
+        self.tile_stack: List[Tile] = []
+
+    def add_tile(self, tile: Tile):
+        """Adds a tile to the board, initializes its vertex data, and updates edge weights."""
+        if tile not in self.tile_stack:
+            self.tile_stack.append(tile)
+            self.vertex_data[tile.get_id()] = [tile.get_x(), tile.get_y(), tile.get_id()]
+            self.update_distances(tile.id)
+
+    def remove_last_tile(self) -> Tile:
+        """Removes the last tile from the board and resets its data."""
+        if self.tile_stack:
+            tile = self.tile_stack.pop()
+            self.reset_tile_data(tile.get_id())
+            return tile
+        return -1
+    
+    def remove_tile_by_id(self, tile_id: int) -> bool:
+        """Removes a specific tile from the board and resets its data."""
+        for tile in self.tile_stack:
+            if tile.get_id() == tile_id:
+                self.tile_stack.remove(tile)
+                self.reset_tile_data(tile_id)
+                return True
+        return False
+
+    def reset_tile_data(self, tile_id: int):
+        """Resets the vertex data and distances of a removed tile."""
+        self.vertex_data[tile_id] = [-1, -1, -1]  # Reset to uninitialized state
+        self.matrix[tile_id, :] = np.inf
+        self.matrix[:, tile_id] = np.inf
+        np.fill_diagonal(self.matrix, 0)
+
+    def reset_tile_coordinates(self):
+        for tile in self.tile_stack:
+            tile.reset_coordinates()
 
 
-    def add_vertex_data(self, vertex, data):
-        if 0 <= vertex < self.size:
-            self.vertex_data[vertex] = data
+    def update_distances(self, tile_id: int):
+        """Updates distances for a newly added tile."""
+        coords = self.vertex_data[:, :2]  # Extract only x, y coordinates
+        diff = coords - self.vertex_data[tile_id, :2]
+        self.matrix[tile_id, :] = np.sqrt(np.sum(diff ** 2, axis=1))
+        self.matrix[:, tile_id] = self.matrix[tile_id, :]
 
-    def find(self, parent, i):
-        if parent[i] == i:
-            return i
-        parent[i] = self.find(parent, parent[i])  # Path compression
-        return parent[i]
+    def kruskals_msf(self, max_weight: float):
+        """Computes a minimum spanning forest with a max weight threshold."""
+        if not self.tile_stack:
+            return []
+        
+        active_tiles = np.array([tile.get_id() for tile in self.tile_stack], dtype=int)
+        edges = np.column_stack(np.triu_indices_from(self.matrix[active_tiles[:, None], active_tiles], 1))
+        weights = self.matrix[active_tiles[edges[:, 0]], active_tiles[edges[:, 1]]]
 
-    def union(self, parent, rank, x, y):
-        xroot = self.find(parent, x)
-        yroot = self.find(parent, y)
+        # Filter edges that exceed max weight
+        valid = weights <= max_weight
+        edges, weights = edges[valid], weights[valid]
 
-        if xroot != yroot:
-            if rank[xroot] < rank[yroot]:
-                parent[xroot] = yroot
-            elif rank[xroot] > rank[yroot]:
-                parent[yroot] = xroot
-            else:
-                parent[yroot] = xroot
-                rank[xroot] += 1
+        # Sort edges by weight
+        sorted_indices = np.argsort(weights)
+        edges, weights = edges[sorted_indices], weights[sorted_indices]
 
-    def kruskals_msf(self, max_weight):
-        """ Computes the minimum spanning forest with a max weight threshold. """
-        self.edges.sort()  # Sort edges by weight
-        parent = list(range(self.size))
-        rank = [0] * self.size
+        # Kruskal's algorithm
+        parent = np.arange(self.size)
+        rank = np.zeros(self.size, dtype=int)
 
-        forests = []
-        edge_used = set()
+        def find(i):
+            if parent[i] != i:
+                parent[i] = find(parent[i])  # Path compression
+            return parent[i]
 
-        for weight, u, v in self.edges:
-            if weight > max_weight:
-                continue  # Ignore edges exceeding max_weight
+        def union(x, y):
+            root_x, root_y = find(x), find(y)
+            if root_x != root_y:
+                if rank[root_x] < rank[root_y]:
+                    parent[root_x] = root_y
+                elif rank[root_x] > rank[root_y]:
+                    parent[root_y] = root_x
+                else:
+                    parent[root_y] = root_x
+                    rank[root_x] += 1
 
-            set_u = self.find(parent, u)
-            set_v = self.find(parent, v)
+        edge_used = []
+        for u, v in edges:
+            if find(u) != find(v):
+                union(u, v)
+                edge_used.append((u, v, self.matrix[u, v]))
 
-            if set_u != set_v:
-                self.union(parent, rank, set_u, set_v)
-                edge_used.add((u, v, weight))
-
-        # Group edges into separate forests
+        # Group edges into forests
         forest_map = {}
-        for vertex in range(self.size):
-            root = self.find(parent, vertex)
+        for tile in self.tile_stack:
+            root = find(tile.get_id())
             if root not in forest_map:
                 forest_map[root] = []
-            forest_map[root].append(vertex)
+            forest_map[root].append(tile.get_id())
 
-        for root, vertices in forest_map.items():
-            forest_edges = [(u, v, w) for u, v, w in edge_used if u in vertices or v in vertices]
-            forests.append((vertices, forest_edges))
-
+        forests = [(vertices, [(u, v, self.matrix[u, v]) for u, v, _ in edge_used if u in vertices or v in vertices]) 
+                   for vertices in forest_map.values()]
+        
         return forests
 
     def print_forests(self, forests):
-        print('Active Sets: ')
+        """Display the current sets of grouped tiles."""
+        print('Active Sets:')
         for i, (vertices, edges) in enumerate(forests):
-            print( [self.vertex_data[v] for v in vertices])
+            print([self.vertex_data[v] for v in vertices])
         print()
-
-
-
-class DistanceMatrix:
-    """Efficiently computes and stores distances between tiles."""
-    def __init__(self, tiles):
-        self.tiles = tiles
-        self.size = len(tiles)
-        self.matrix = np.full((self.size, self.size), np.inf)  # Initialize with infinity
-        np.fill_diagonal(self.matrix, 0)  # Distance to itself is 0
-
-    def update_coordinates(self):
-        """Extract updated coordinates from tiles into a NumPy array."""
-        self.coordinates = np.array([self.tiles[tile].get_coordinates() for tile in self.tiles])
-
-    
-
-    def recompute_distances(self):
-        """Vectorized recomputation of all distances."""
-        self.update_coordinates()  # Refresh positions
-        indices = np.arange(self.size)
-        i, j = np.meshgrid(indices, indices, indexing='ij')
-
-        # Compute Euclidean distance efficiently
-        self.matrix = np.sqrt(((self.coordinates[i, 0] - self.coordinates[j, 0]) ** 2) +
-                              ((self.coordinates[i, 1] - self.coordinates[j, 1]) ** 2))
-
-    def print_matrix(self):
-        """Display the matrix for debugging."""
-        print(np.array_str(self.matrix, precision=2, suppress_small=True))

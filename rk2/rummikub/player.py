@@ -45,5 +45,4 @@ class Player:
 
     def draw_tile(self, deck: Deck) -> None:     
         tile = deck.pick_tile()
-        self.rack[tile.id] = tile
-
+        self.rack.append(tile)

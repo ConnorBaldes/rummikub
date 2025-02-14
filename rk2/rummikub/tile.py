@@ -10,9 +10,9 @@ class Tile:
         self.color = color
         self.image: pygame.Surface = pygame.image.load(image_path)
         self.rect = self.image.get_rect()
-        self.rect.x = None
-        self.rect.y = None
-
+        self.rect.x = -1
+        self.rect.y = -1
+        self.original_pos: Tuple[int, int] = (self.rect.x, self.rect.y)  # Store original position in case of collision
     def __repr__(self) -> str:
         return f'({self.id})'
     
@@ -79,7 +79,7 @@ class Tile:
         return self.rect.y
     
     def get_coordinates(self) -> Tuple[int, int]:
-        return (self.x, self.y)
+        return (self.rect.x, self.rect.y)
     
 
     def set_x(self, x) -> None:
@@ -92,6 +92,15 @@ class Tile:
         self.rect.x = x
         self.rect.y = y
 
+    def set_original_coordinates(self) -> None:
+        self.original_pos = self.get_coordinates()
+
+    def get_original_coordinates(self) -> Tuple[int, int]:
+        return self.original_pos
+
+    def reset_coordinates(self) -> None:
+        og_coords = self.get_original_coordinates()
+        self.set_coordinates(og_coords[0], og_coords[1])
 
     def draw_tile(self, screen) -> None:
         screen.blit(self.image, self.rect)
