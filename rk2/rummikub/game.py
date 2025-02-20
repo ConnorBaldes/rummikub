@@ -16,14 +16,12 @@ class Game:
 
     def __init__(self):
         pygame.init()
-        self.players = [Player(name, []) for name in self._get_player_names()]
         self.screen = pygame.display.set_mode((3400, 2500))
         pygame.display.set_caption("Rummikub")
         self.clock = pygame.time.Clock()
         self.running = True
         self.deck = Deck("./rummikub/assets/tiles")
-        for player in self.players:
-            player.rack = self.deck.assign_tiles()
+        self.players = [Player(name, self.deck.assign_tiles()) for name in self._get_player_names()]
         self.current_turn = 0
         self.game_screen = GameScreen(self)
         self.menu_screen = MenuScreen(self)

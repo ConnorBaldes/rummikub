@@ -40,7 +40,7 @@ class Board:
     def __init__(self):
 
         self.screen = pygame.display.set_mode((3400, 2500))
-        self.deck = Deck()
+        self.deck = Deck('./assets/tiles/')
         self.distance_matrix = DistanceMatrix(self.deck.tiles)
         self.tile_graph = self._build_graph()
         self.sets = []
@@ -54,7 +54,7 @@ class Board:
 
         tile_graph = Graph(len(self.deck.tiles))
 
-        for tile in range(len(self.deck.tiles)):
+        for tile in range(len(self.deck)):
             tile_graph.add_vertex_data(self.deck.tiles[tile].id, data= self.deck.tiles[tile])
         for tile in range(len(self.deck.tiles)):
             for other_tile in range(len(self.deck.tiles)):

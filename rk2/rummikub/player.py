@@ -6,7 +6,7 @@ class Player:
     def __init__(self, name: Type[str], initial_14: List[Tile]):
 
         self.name = name
-        self.rack = self._build_rack(initial_14)
+        self.rack: Dict = self._build_rack(initial_14)
         self.initial_meld: bool = False
 
     def __repr__(self) -> Type[str]:

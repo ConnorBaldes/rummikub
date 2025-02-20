@@ -49,3 +49,10 @@ class Board:
     def reset_invalid_turn(self):
         self.pop_added()
         self.reset_board()
+
+    def get_tile_positions(self):
+
+        tile_positions = {}
+        for tile in self.added_tiles: 
+            tile_positions[tile.id] = (tile.rect.x, tile.rect.y)
+        return tile_positions
