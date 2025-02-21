@@ -3,46 +3,30 @@ from rummikub.deck import Deck
 from typing import List, Type, Dict, Iterator
 
 class Player:
-    def __init__(self, name: Type[str], initial_14: List[Tile]):
+    def __init__(self, game, name: Type[str]):
 
+        self.game = game
         self.name = name
-        self.rack: Dict = self._build_rack(initial_14)
+        self.tiles: Dict = self._build_rack()
         self.initial_meld: bool = False
 
-    def __repr__(self) -> Type[str]:
-        return f'Player({self.name})'
-    
-    def __str__(self) -> Type[str]:
-        return f'{self.name}'
-    
-    def __getitem__(self, id: int) -> Tile:
-        return self.rack.get(str(id))
-    
-    def __setitem__(self, id: int, tile: Tile) -> None:
-        self.rack[str(id)] = tile
+    def _build_rack(self) -> Dict: 
+        tiles = {}
+        for _ in range(14):
+            new_tile = self.game.deck.pick_tile()
+            tiles[new_tile.get_id()] = new_tile
+        return tiles
 
-    def __delitem__(self, id: int) -> Tile:
-        return self.rack.pop(str(id))
-    
-    def __len__(self) -> int:
-        return len(self.rack)
-    
-    def __iter__(self) -> Iterator[str]:
-        return iter(self.rack)
-    
-    def __contains__(self, other: Tile) -> bool:
-        if not isinstance(other, Tile):
-            raise TypeError(f"Cannot compare Tile with {type(other).__name__}")
-        return other in self.rack
-    
+    def draw_tile(self) -> None:     
+        new_tile = self.game.deck.pick_tile()
+        self.rack[new_tile.get_id()] = new_tile
 
+    def add_tile(self, tile) -> None:
+        self.tiles[tile.id] = tile
 
-    def _build_rack(self, tiles: List[Tile]) -> Dict: 
-        rack = {}
-        for tile in tiles:
-            rack[tile.get_id()] = tile
-        return rack
-
-    def draw_tile(self, deck: Deck) -> None:     
-        tile = deck.pick_tile()
-        self.rack.append(tile)
+    def remove_tile(self, tile_id):
+        return self.tiles.pop(tile_id, None)
+    
+    def draw(self, screen) -> None:
+        for tile in self.tiles.values():
+            tile.draw(screen)

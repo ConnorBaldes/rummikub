@@ -21,7 +21,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.deck = Deck("./rummikub/assets/tiles")
-        self.players = [Player(name, self.deck.assign_tiles()) for name in self._get_player_names()]
+        self.players = [Player(self, name) for name in self._get_player_names()]
         self.current_turn = 0
         self.game_screen = GameScreen(self)
         self.menu_screen = MenuScreen(self)

@@ -11,8 +11,8 @@ class GameScreen:
         self.screen = pygame.display.set_mode((3400, 2500))
         self.board = Board(game)
         self.dragging: Tile = None
-        self.offset_x = 0
-        self.offset_y = 0
+        self.dragged_tile = None
+        self.dragged_from = None
 
         # Load images
         self.draw_button_img = pygame.image.load("./rummikub/assets/draw_button.png")
@@ -31,12 +31,22 @@ class GameScreen:
         for event in events:
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                for tile in self.game.players[self.game.current_turn].rack.values():
-                    if tile.rect.collidepoint(event.pos):
-                        self.dragging = tile
-                        self.offset_x = tile.rect.x - event.pos[0]
-                        self.offset_y = tile.rect.y - event.pos[1]
-                        tile.set_original_coordinates()
+                mouse_pos = pygame.mouse.get_pos()
+                # Check player rack first.
+                for tile in self.game.players[self.game.current_turn].tiles.values():
+                    if tile.rect.collidepoint(mouse_pos):
+                        tile.start_drag(mouse_pos)
+                        self.dragged_tile = tile
+                        self.dragged_from = 'rack'
+                        break
+                # If not in rack, check board tiles (all are draggable on board).
+                if self.dragged_tile is None:
+                    for tile in self.board.tiles.values():
+                        if tile.rect.collidepoint(mouse_pos):
+                            tile.start_drag(mouse_pos)
+                            self.dragged_tile = tile
+                            self.dragged_from = 'board'
+                            break
 
 
                 if self.draw_button_rect.collidepoint(event.pos):
@@ -47,67 +57,70 @@ class GameScreen:
                         self.game.next_turn()
                     # TO DO: Reset tiles
 
-            elif event.type == pygame.MOUSEMOTION:
-                if self.dragging:
-                    self.game.players[self.game.current_turn].rack[self.dragging.get_id()].set_x(event.pos[0] + self.offset_x)
-                    self.game.players[self.game.current_turn].rack[self.dragging.get_id()].set_y(event.pos[1] + self.offset_y)
-                    print(self.dragging.rect.x)
-                    
-                    # Prevent movement outside the board
-                    self.dragging.set_x(max(0, min(3330, self.dragging.get_x())))
-                    self.dragging.set_y(max(0, min(2380, self.dragging.get_y())))
+            elif event.type == pygame.MOUSEMOTION and self.dragged_tile:
+                self.dragged_tile.update_drag(pygame.mouse.get_pos())
 
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if self.dragging:
-                    if self.check_overlap(self.dragging):  
-                        self.dragging.set_original_coordinates()  # Reset to original position if overlapping
+            elif event.type == pygame.MOUSEBUTTONUP and self.dragged_tile:
+                self.dragged_tile.stop_drag()
+                # Decide where the tile was dropped:
+                if self.dragged_from == 'rack':
+                    if self.is_on_board(self.dragged_tile.rect) and self.is_valid_drop(self.dragged_tile, self.board.tiles):
+                        # Valid drop from rack to board.
+                        self.game.players[self.game.current_turn].remove_tile(self.dragged_tile.id)
+                        self.board.add_tile(self.dragged_tile)
                     else:
-                        self.board.update_sets()
-
-                self.dragging = None
+                        # Invalid drop: revert to pre-drag position.
+                        self.dragged_tile.revert_to_pre_drag()
+                elif self.dragged_from == 'board':
+                    if self.is_on_board(self.dragged_tile.rect):
+                        # Dropped within board, but check for collisions.
+                        if not self.is_valid_drop(self.dragged_tile, self.board.tiles):
+                            # Collision detected: revert movement.
+                            self.dragged_tile.revert_to_pre_drag()
+                        # Else: leave tile at new board position.
+                    else:
+                        # Dropped outside board.
+                        if self.dragged_tile.id in self.board.added_tiles:
+                            # Allow removal back to rack.
+                            removed_tile = self.board.remove_tile(self.dragged_tile.id)
+                            if removed_tile:
+                                self.game.players[self.game.current_turn].add_tile(removed_tile)
+                        else:
+                            # Pre-existing board tile: revert to its turn start.
+                            self.dragged_tile.revert_to_turn_start()
+                self.dragged_tile = None
+                self.dragged_from = None
 
     def update(self):
         self.board.update_sets()
     
     def render(self):
         self.screen.fill((0, 128, 0))  # Clear screen
-        self.board.draw(self.screen)
-        
-        # Draw
-        self.screen.blit(self.player_rack_img, self.player_rack_rect)
+ 
+        # Draw player rack and board buttons
         self.screen.blit(self.draw_button_img, self.draw_button_rect.topleft)
         self.screen.blit(self.end_button_img, self.end_button_rect.topleft)
+        self.screen.blit(self.player_rack_img, self.player_rack_rect)
         self.draw_player_tiles()
+        # Draw board tiles
+        self.board.draw(self.screen)
         
         pygame.display.update()
 
 
     def draw_player_tiles(self) -> None:
-        x: int = 35
-        y: int = 2015
+        self.game.players[self.game.current_turn].draw(self.screen)
 
-        if self.dragging:
-            self.dragging.draw_tile(self.screen)
-        for tile in self.game.players[self.game.current_turn].rack.values():
-            if not self.dragging or tile != self.dragging:
-                if not (x + 75) > 3400:
-                    tile.set_coordinates(x, y)
-                    tile.set_original_coordinates()
-                    tile.draw_tile(self.screen)
-                    if not (x + 220) > 3400:
-                        x +=145
-                    else:
-                        if not (y + 370) > 2500:
-                            x = 35
-                            y += 245
-                        else: 
-                            break
-                else:
-                    if not (y + 370) > 2500:
-                        x = 35
-                        y += 245
-                    else: 
-                        break               
+    def is_on_board(self, tile) -> None:
+        return tile.x < 3400 and tile.y < 1760
+
+    def is_valid_drop(self, tile, container):
+        # 'container' could be a dictionary of tiles from the board or rack.
+        for other in container.values():
+            if other.id != tile.id and tile.rect.colliderect(other.rect):
+                return False
+        return True
+
 
     # Function to check if a dragged tile collides with any other tile
     def check_overlap(self, dragged_tile):

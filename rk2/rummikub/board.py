@@ -7,48 +7,49 @@ from typing import List, Optional
 class Board:
     def __init__(self, game):
         self.game = game
-        self.graph: Graph = Graph(len(self.game.deck))
-        self.added_tiles: List[Tile] = []
+        self.graph: Graph = Graph(106)
+        self.tiles = {} # All board tiles: {tile_id: Tile}
+        self.added_tiles = [] # Tile IDs added during current turn
 
     def add_tile(self, tile: Tile) -> None:
-        """Adds a tile to the board and updates its position in the graph."""
+        self.tiles[tile.id] = tile
+        self.added_tiles.append(tile.id)
+
+        # Update board graph
         self.graph.add_tile(tile)
     
-    def remove_tile(self, tile_id: int) -> int:
-        """Removes tile added to the board via its id."""
-        return self.graph.remove_tile_by_id(tile_id)
+    def remove_tile(self, tile_id: int):
+        # Only reversible if the tile was added on the current turn
+        if tile_id in self.added_tiles:
+            self.added_tiles.remove(tile_id)
+            self.graph.remove_tile_by_id(tile_id)
+            return self.tiles.pop(tile_id)
+        
+        return None
     
     def draw(self, screen) -> None:
-        """Draws all tiles currently on the board."""
-        for tile_id in self.graph.tile_stack:
-            tile = self.game.get_tile_by_id(tile_id)
-            if tile:
-                tile.draw_tile(screen)
+        for tile in self.tiles.values():
+            tile.draw(screen)
     
+
+
+
+
     def update_sets(self) -> None:
         """Updates sets by finding connected tile groups using Kruskal's algorithm."""
-        forests = self.graph.kruskals_msf(max_weight=175)
+        self.graph.update_all_tiles(self.tiles)
+        forests = self.graph.kruskals_msf(self.tiles, max_weight=175)
+        #print(forests)
         self.graph.print_forests(forests)
 
     def validate_sets(self) -> bool:
+        self.added_tiles = []
         return True
         # TO DO: Check that all forests in graph are either set or run 
-
-    def pop_added(self) -> None:
-        """Remove tiles added to board by current player and return them to
-           players rack."""
-        for tile_id in self.added_tiles:
-            tile = self.graph.remove_last_tile()
-            self.game.players[tile_id] = tile
-            self.game.players[tile_id].reset_coordinates()
 
     def reset_board(self) -> None:
         self.graph.reset_tile_coordinates()
         self.graph.update_distances()
-
-    def reset_invalid_turn(self):
-        self.pop_added()
-        self.reset_board()
 
     def get_tile_positions(self):
 
