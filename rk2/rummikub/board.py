@@ -1,4 +1,5 @@
 import pygame
+import math
 from rummikub.tile import Tile
 from rummikub.utils import Graph
 from typing import List, Optional
@@ -32,15 +33,48 @@ class Board:
             tile.draw(screen)
     
 
-
-
-
     def update_sets(self) -> None:
         """Updates sets by finding connected tile groups using Kruskal's algorithm."""
         self.graph.update_all_tiles(self.tiles)
-        forests = self.graph.kruskals_msf(self.tiles, max_weight=175)
-        #print(forests)
+        forests = self.graph.kruskals_msf(self.tiles, max_weight=200)
         self.graph.print_forests(forests)
+
+    def snap_tile(self, dropped_tile: Tile, snap_threshold: float = 200) -> None:
+        """
+        Snap dropped_tile horizontally so that it aligns to the left or right side
+        of the nearest tile, creating a row.
+        Assumes tile dimensions are 140px wide and 240px tall.
+        """
+        # Get the nearest neighbor info from the graph.
+        nearest_id, nearest_distance = self.graph.get_nearest_neighbor(dropped_tile)
+        if nearest_distance >= snap_threshold:
+            return  # No snapping if too far away.
+        
+        nearest_tile = self.tiles.get(nearest_id)
+        if not nearest_tile:
+            return
+
+        # Compute candidate positions:
+        # Candidate to snap on the left side of nearest_tile:
+        candidate_left = (nearest_tile.get_x() - dropped_tile.rect.width, nearest_tile.get_y())
+        # Candidate to snap on the right side of nearest_tile:
+        candidate_right = (nearest_tile.get_x() + nearest_tile.rect.width, nearest_tile.get_y())
+
+        # Compute distance from the dropped tile's current position to each candidate.
+        current_pos = dropped_tile.get_coordinates()
+        dist_left = math.hypot(current_pos[0] - candidate_left[0],
+                               current_pos[1] - candidate_left[1])
+        dist_right = math.hypot(current_pos[0] - candidate_right[0],
+                                current_pos[1] - candidate_right[1])
+
+        # Choose the candidate with the smaller distance.
+        best_candidate = candidate_left if dist_left < dist_right else candidate_right
+
+        # Snap the dropped tile.
+        dropped_tile.set_coordinates(best_candidate[0], best_candidate[1])
+        # Update the graph for the dropped tile.
+        self.graph.update_tile(dropped_tile)
+
 
     def validate_sets(self) -> bool:
         self.added_tiles = []
@@ -54,6 +88,7 @@ class Board:
     def get_tile_positions(self):
 
         tile_positions = {}
-        for tile in self.added_tiles: 
+        for tile in self.tiles: 
             tile_positions[tile.id] = (tile.rect.x, tile.rect.y)
         return tile_positions
+    

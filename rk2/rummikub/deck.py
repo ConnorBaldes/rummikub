@@ -2,6 +2,7 @@ from rummikub.tile import Tile
 from typing import Type, List, Tuple
 import re
 import os
+import random
 
 class Deck:
 
@@ -23,7 +24,8 @@ class Deck:
             if match:
                 number, color = match.groups()
                 tile_data.append((int(tile_id), int(number), color, f'{self.tile_folder}/{filename}'))
-                tile_id += 1
+                tile_data.append((int(tile_id + 1), int(number), color, f'{self.tile_folder}/{filename}'))
+                tile_id += 2
         return tile_data
 
     def _initialize_tiles(self) -> List[Tile]:
@@ -36,6 +38,8 @@ class Deck:
     
     # TO DO
     def _shuffle(self, tiles: List[Tile]) -> List[Tile]:
+        """Shuffles the deck of tiles randomly."""
+        random.shuffle(tiles)
         return tiles
 
     def pick_tile(self) -> Tile:

@@ -86,6 +86,15 @@ class Graph:
         self.reset_tile_data(tile_id)
         return True
     
+    def get_nearest_neighbor(self, tile) -> Tuple[int, float]:
+        """Returns (nearest_tile_id, distance) for the given tile, excluding itself."""
+        tid = tile.get_id()
+        distances = self.matrix[tid].copy()
+        distances[tid] = np.inf  # Exclude self
+        nearest_id = int(np.argmin(distances))
+        nearest_distance = distances[nearest_id]
+        return nearest_id, nearest_distance
+
     def kruskals_msf(self, active_tiles: dict, max_weight: float):
         """Computes a minimum spanning forest with a max weight threshold.
            'active_tiles' is a dictionary {tile_id: Tile}.

@@ -19,7 +19,7 @@ class Player:
 
     def draw_tile(self) -> None:     
         new_tile = self.game.deck.pick_tile()
-        self.rack[new_tile.get_id()] = new_tile
+        self.tiles[new_tile.get_id()] = new_tile
 
     def add_tile(self, tile) -> None:
         self.tiles[tile.id] = tile

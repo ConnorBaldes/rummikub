@@ -50,12 +50,14 @@ class GameScreen:
 
 
                 if self.draw_button_rect.collidepoint(event.pos):
-                    self.game.players[self.game.current_turn].draw_tile(self.game.deck)
+                    self.game.players[self.game.current_turn].draw_tile()
                     self.game.next_turn()
                 elif self.end_button_rect.collidepoint(event.pos):
                     if self.board.validate_sets():
                         self.game.next_turn()
-                    # TO DO: Reset tiles
+                    else:
+                        # TO DO: Reset tiles
+                        pass
 
             elif event.type == pygame.MOUSEMOTION and self.dragged_tile:
                 self.dragged_tile.update_drag(pygame.mouse.get_pos())
@@ -68,6 +70,9 @@ class GameScreen:
                         # Valid drop from rack to board.
                         self.game.players[self.game.current_turn].remove_tile(self.dragged_tile.id)
                         self.board.add_tile(self.dragged_tile)
+                        self.board.update_sets()
+                        self.board.snap_tile(self.dragged_tile)
+                        
                     else:
                         # Invalid drop: revert to pre-drag position.
                         self.dragged_tile.revert_to_pre_drag()
@@ -78,6 +83,9 @@ class GameScreen:
                             # Collision detected: revert movement.
                             self.dragged_tile.revert_to_pre_drag()
                         # Else: leave tile at new board position.
+                        self.board.update_sets()
+                        self.board.snap_tile(self.dragged_tile)
+                        
                     else:
                         # Dropped outside board.
                         if self.dragged_tile.id in self.board.added_tiles:
@@ -92,7 +100,7 @@ class GameScreen:
                 self.dragged_from = None
 
     def update(self):
-        self.board.update_sets()
+        pass
     
     def render(self):
         self.screen.fill((0, 128, 0))  # Clear screen
