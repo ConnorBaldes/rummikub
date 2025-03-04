@@ -50,14 +50,20 @@ class GameScreen:
 
 
                 if self.draw_button_rect.collidepoint(event.pos):
-                    self.game.players[self.game.current_turn].draw_tile()
-                    self.game.next_turn()
+                    if self.board.added_tiles:
+                        print("Cannot draw a tile while you have tiles added to the board!")
+                    else:
+                        self.game.players[self.game.current_turn].draw_tile()
+                        self.game.next_turn()
+
                 elif self.end_button_rect.collidepoint(event.pos):
-                    if self.board.validate_sets():
+                    if self.game.validate_turn():
+                        if self.game.check_for_win():
+                            break
                         self.game.next_turn()
                     else:
-                        # TO DO: Reset tiles
-                        pass
+                        self.board.reset_board()
+                        
 
             elif event.type == pygame.MOUSEMOTION and self.dragged_tile:
                 self.dragged_tile.update_drag(pygame.mouse.get_pos())

@@ -1,106 +1,176 @@
+import pygame
+import math
+from rummikub.tile import Tile
+from rummikub.utils import Graph
+from typing import List, Optional
+
+
 class Board:
-    def __init__(self):
-        self.sets = []
-        self.staging = []
+    def __init__(self, game):
+        self.game = game
+        self.graph: Graph = Graph(106)
+        self.tiles = {} # All board tiles: {tile_id: Tile}
+        self.added_tiles = [] # Tile IDs added during current turn
 
-    def add_set(self, tile_set):
-        # Validate and add a new set
-        if not self.is_valid_set(tile_set):
-            raise ValueError("Invalid tile set")
-        self.sets.append(tile_set)
+    def add_tile(self, tile: Tile) -> None:
+        self.tiles[tile.id] = tile
+        self.added_tiles.append(tile.id)
 
-    def add_to_set(self, set_index, tile_set):
-        if set_index < 0 or set_index >= len(self.sets):
-            raise IndexError("Invalid set index")
-        updated_set = self.sets[set_index] + tile_set
-        if not self.is_valid_set(updated_set):
-            raise ValueError("Adding these tiles results in an invalid set")
-        self.sets[set_index] = updated_set
+        # Update board graph
+        self.graph.add_tile(tile)
+    
+    def remove_tile(self, tile_id: int):
+        # Only reversible if the tile was added on the current turn
+        if tile_id in self.added_tiles:
+            self.added_tiles.remove(tile_id)
+            self.graph.remove_tile_by_id(tile_id)
+            return self.tiles.pop(tile_id)
+        
+        return None
+    
+    def draw(self, screen) -> None:
+        for tile in self.tiles.values():
+            tile.draw(screen)
+    
 
-    def is_valid_set(self, tile_set):
+    def update_sets(self) -> None:
+        """Updates sets by finding connected tile groups using Kruskal's algorithm."""
+        self.graph.update_all_tiles(self.tiles)
+        forests = self.graph.kruskals_msf(self.tiles, max_weight=200)
+        self.graph.print_forests(forests)
+
+    def snap_tile(self, dropped_tile: Tile, snap_threshold: float = 200) -> None:
         """
-        Check if a tile set is valid (run or group).
-        :param tile_set: A list of Tile objects.
-        :return: True if the set is valid, False otherwise.
+        Snap dropped_tile horizontally so that it aligns to the left or right side
+        of the nearest tile, creating a row.
+        Assumes tile dimensions are 140px wide and 240px tall.
         """
-        if len(tile_set) < 3:
-            return False  # Sets must have at least 3 tiles
+        # Get the nearest neighbor info from the graph.
+        nearest_id, nearest_distance = self.graph.get_nearest_neighbor(dropped_tile)
+        if nearest_distance >= snap_threshold:
+            return  # No snapping if too far away.
+        
+        nearest_tile = self.tiles.get(nearest_id)
+        if not nearest_tile:
+            return
 
-        # Check for a "group": same number, different colors
-        if self._is_group(tile_set):
+        # Compute candidate positions:
+        # Candidate to snap on the left side of nearest_tile:
+        candidate_left = (nearest_tile.get_x() - dropped_tile.rect.width, nearest_tile.get_y())
+        # Candidate to snap on the right side of nearest_tile:
+        candidate_right = (nearest_tile.get_x() + nearest_tile.rect.width, nearest_tile.get_y())
+
+        # Compute distance from the dropped tile's current position to each candidate.
+        current_pos = dropped_tile.get_coordinates()
+        dist_left = math.hypot(current_pos[0] - candidate_left[0],
+                               current_pos[1] - candidate_left[1])
+        dist_right = math.hypot(current_pos[0] - candidate_right[0],
+                                current_pos[1] - candidate_right[1])
+
+        # Choose the candidate with the smaller distance.
+        best_candidate = candidate_left if dist_left < dist_right else candidate_right
+
+        # Snap the dropped tile.
+        dropped_tile.set_coordinates(best_candidate[0], best_candidate[1])
+        # Update the graph for the dropped tile.
+        self.graph.update_tile(dropped_tile)
+
+
+
+    def validate_sets(self) -> bool:
+        # Get the connected groups (forests) from the graph.
+        forests = self.graph.kruskals_msf(self.tiles, max_weight=200)
+        
+        # Helper function to check for a valid group.
+        def is_valid_group(tiles: list) -> bool:
+            # Must be exactly 3 or 4 tiles.
+            if len(tiles) not in (3, 4):
+                return False
+            # Separate non-joker tiles.
+            non_jokers = [tile for tile in tiles if not tile.is_joker]
+            if not non_jokers:  # There must be at least one non-joker to define the number.
+                return False
+            # All non-joker tiles must share the same number.
+            target_number = non_jokers[0].number
+            for tile in non_jokers:
+                if tile.number != target_number:
+                    return False
+            # Colors of non-joker tiles must be unique.
+            colors = [tile.color for tile in non_jokers]
+            if len(colors) != len(set(colors)):
+                return False
             return True
 
-
-        # Check for a "run": consecutive numbers, same color
-        if self._is_run(tile_set):
+        # Helper function to check for a valid run.
+        def is_valid_run(tiles: list) -> bool:
+            # Must contain at least 3 tiles.
+            if len(tiles) < 3:
+                return False
+            non_jokers = [tile for tile in tiles if not tile.is_joker]
+            if not non_jokers:  # Run must have at least one non-joker to set the color.
+                return False
+            # All non-joker tiles must be the same color.
+            run_color = non_jokers[0].color
+            for tile in non_jokers:
+                if tile.color != run_color:
+                    return False
+            # Sort non-joker tiles by their number.
+            non_jokers.sort(key=lambda tile: tile.number)
+            numbers = [tile.number for tile in non_jokers]
+            # Check that there are no duplicate numbers among non-jokers.
+            if len(numbers) != len(set(numbers)):
+                return False
+            # Compute the total gaps needed between consecutive numbers.
+            required_gaps = 0
+            for i in range(len(numbers) - 1):
+                required_gaps += numbers[i+1] - numbers[i] - 1
+            available_jokers = len(tiles) - len(non_jokers)
+            if required_gaps > available_jokers:
+                return False
             return True
 
-        return False
+        # Iterate over each forest and verify that it forms a valid set.
+        for forest in forests:
+            tile_ids, _ = forest
+            tile_list = [self.tiles[t_id] for t_id in tile_ids]
+            # A valid set must be either a valid group or a valid run.
+            if not (is_valid_group(tile_list) or is_valid_run(tile_list)):
+                # Print an error message with details about the invalid set.
+                set_details = [f"(Number: {tile.number}, Color: {tile.color}{' Joker' if tile.is_joker else ''})"
+                            for tile in tile_list]
+                print("Invalid set:", set_details)
+                return False
 
-    def _is_group(self, tile_set):
-        """
-        Check if the tile set is a valid group (same number, different colors).
-        :param tile_set: A list of Tile objects.
-        :return: True if the set is a valid group, False otherwise.
-        """
-        numbers = {tile.number for tile in tile_set if not tile.is_joker}
-        colors = {tile.color for tile in tile_set if not tile.is_joker}
-
-        # All tiles must have the same number and unique colors (ignoring jokers)
-        return len(numbers) == 1 and len(colors) == len(tile_set) - sum(tile.is_joker for tile in tile_set)
-
-    def _is_run(self, tile_set):
-        """
-        Check if the tile set is a valid run (consecutive numbers, same color).
-        :param tile_set: A list of Tile objects.
-        :return: True if the set is a valid run, False otherwise.
-        """
-        # Separate tiles into regular tiles (with numbers) and joker tiles (with None)
-        regular_tiles = [tile for tile in tile_set if not tile.is_joker]
-        joker_tiles = [tile for tile in tile_set if tile.is_joker]
-        
-        # Check for duplicates in the regular tiles
-        if len(regular_tiles) != len(set(regular_tiles)):
-            return False  # There are duplicate tiles, so it's not a valid run
-        
-        # Sort regular tiles by number
-        sorted_tiles = sorted(regular_tiles, key=lambda tile: tile.number)
-        
-        # Ensure all tiles in the run have the same color, ignoring joker tiles
-        colors = {tile.color for tile in sorted_tiles}
-        
-        if len(colors) != 1:
-            return False  # All tiles must have the same color in a run
-        
-        # Check for consecutive numbers in the sorted regular tiles
-        consecutive = True
-        missing_numbers = []
-        
-        for i in range(1, len(sorted_tiles)):
-            # If the numbers are not consecutive, note the missing numbers
-            if sorted_tiles[i].number != sorted_tiles[i-1].number + 1:
-                consecutive = False
-                # Add the missing numbers between the current and previous tile
-                missing_numbers.extend(range(sorted_tiles[i-1].number + 1, sorted_tiles[i].number))
-        
-        # If the sequence is not consecutive, we need to check if jokers can fill the gaps
-        if not consecutive:
-            if len(missing_numbers) > len(joker_tiles):
-                return False  # Not enough jokers to fill the gaps
-            # If there are enough jokers, they can fill the missing numbers
-            joker_tiles_needed = len(missing_numbers)
-            if joker_tiles_needed <= len(joker_tiles):
-                return True  # The run can be completed with the jokers
-            return False
-
-        # If the tiles were already consecutive, the run is valid
+        # Clear the added_tiles list after validation.
+        self.added_tiles = []
         return True
 
 
+    def reset_board(self) -> None:
+        # First, reset all tiles to their turn-start positions.
+        for tile in self.tiles.values():
+            tile.revert_to_turn_start()
         
-    def __repr__(self):
-        """
-        String representation of the board for debugging.
-        :return: A string describing the board's current state.
-        """
-        return f"Board({self.sets})"
+        # Get the current player.
+        current_player = self.game.players[self.game.current_turn]
+        
+        # Remove all tiles added this turn from the board.
+        # We iterate over a copy because remove_tile modifies self.added_tiles.
+        added_tile_ids = self.added_tiles.copy()
+        for tile_id in added_tile_ids:
+            tile = self.remove_tile(tile_id)
+            if tile:
+                # Return the tile to the current player's tile collection.
+                current_player.add_tile(tile)
+        
+        # Finally, update the board's sets.
+        self.update_sets()
+
+
+    def get_tile_positions(self):
+
+        tile_positions = {}
+        for tile in self.tiles: 
+            tile_positions[tile.id] = (tile.rect.x, tile.rect.y)
+        return tile_positions
+    
