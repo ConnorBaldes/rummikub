@@ -230,6 +230,71 @@ All manipulations must result in valid sets with no loose tiles left on the tabl
 - A joker on a rack carries a penalty of 30 points
 - The player with the most game wins or highest score after the agreed number of rounds is the overall winner
 
+## Game Screens
+
+### Main Menu
+
+The main menu provides options for starting a new game, configuring settings, and viewing game rules.
+
+![Main Menu Screenshot](./readme_images/home_screen.png)
+![Game Rules Screenshot](./readme_images/game_rules.png)
+![Game Example Screenshot](./readme_images/game_examples.png)
+**Key Features:**
+- New Game button to start a fresh game
+- Rules button for accessing game instructions
+- Settings for customizing game parameters
+- Attractive background and Rummikub branding
+
+### Player Setup
+
+The player setup screen allows configuring player names and the number of players for the game.
+
+![Player Setup Screenshot](./readme_images/player_setup.png)
+
+**Key Features:**
+- Player name input fields
+- Player count selection
+- Start Game button to begin play
+- Visual feedback for valid selections
+
+### Turn Screen
+
+The turn screen displays information about the current player's turn along with game statistics.
+
+![Turn Screen Screenshot](./readme_images/turn_screen.png)
+
+**Key Features:**
+- Clear indication of the current player
+- Game statistics display (turns played, tiles drawn, etc.)
+- Start Turn button to begin the player's turn
+- Random game tip for strategy guidance
+
+### Game Board
+
+The main gameplay screen with the board, player rack, and game controls.
+
+![Game Board Screenshot](./readme_images/game_board.png)
+
+**Key Features:**
+- Drag-and-drop tile manipulation
+- Clear visualization of the game board
+- Current player's rack
+- End Turn button and other controls
+- Visual feedback for valid and invalid moves
+
+### End Game
+
+The end game screen displayed when a player wins, showing final scores and stats.
+
+[End Game Screenshot](path/to/end_game_screenshot.png)
+
+**Key Features:**
+- Winner announcement
+- Score breakdown for all players
+- Game statistics summary
+- Play Again option
+- Return to Main Menu button
+
 ## Project Architecture
 
 ### Core Components
@@ -557,71 +622,6 @@ def handle_drag_and_drop(self, events):
                 self.dragging_tile.rect.x = mouse_x - self.dragging_tile.rect.width // 2
                 self.dragging_tile.rect.y = mouse_y - self.dragging_tile.rect.height // 2
 ```
-
-## Game Screens
-
-### Main Menu
-
-The main menu provides options for starting a new game, configuring settings, and viewing game rules.
-
-![Main Menu Screenshot](./readme_images/home_screen.png)
-![Game Rules Screenshot](./readme_images/game_rules.png)
-![Game Example Screenshot](./readme_images/game_examples.png)
-**Key Features:**
-- New Game button to start a fresh game
-- Rules button for accessing game instructions
-- Settings for customizing game parameters
-- Attractive background and Rummikub branding
-
-### Player Setup
-
-The player setup screen allows configuring player names and the number of players for the game.
-
-![Player Setup Screenshot](./readme_images/player_setup.png)
-
-**Key Features:**
-- Player name input fields
-- Player count selection
-- Start Game button to begin play
-- Visual feedback for valid selections
-
-### Turn Screen
-
-The turn screen displays information about the current player's turn along with game statistics.
-
-![Turn Screen Screenshot](./readme_images/turn_screen.png)
-
-**Key Features:**
-- Clear indication of the current player
-- Game statistics display (turns played, tiles drawn, etc.)
-- Start Turn button to begin the player's turn
-- Random game tip for strategy guidance
-
-### Game Board
-
-The main gameplay screen with the board, player rack, and game controls.
-
-![Game Board Screenshot](./readme_images/game_board.png)
-
-**Key Features:**
-- Drag-and-drop tile manipulation
-- Clear visualization of the game board
-- Current player's rack
-- End Turn button and other controls
-- Visual feedback for valid and invalid moves
-
-### End Game
-
-The end game screen displayed when a player wins, showing final scores and stats.
-
-[End Game Screenshot](path/to/end_game_screenshot.png)
-
-**Key Features:**
-- Winner announcement
-- Score breakdown for all players
-- Game statistics summary
-- Play Again option
-- Return to Main Menu button
 
 ## Installation and Setup
 
