@@ -1,12 +1,6 @@
-*Thinking...*
-
-> The user is asking for the content to be provided in Markdown format, which it already is. However, they may be requesting a more explicit rendering of the Markdown, perhaps with the backticks removed so they can directly copy-paste it as a .md file. I'll provide the exact content as plain Markdown without any additional formatting.
-
 # Rummikub Game Implementation
 
 A comprehensive implementation of the classic Rummikub tile game built with Python and Pygame.
-
-[Rummikub Game Banner](path/to/game_banner.png)
 
 ## Table of Contents
 
@@ -473,8 +467,9 @@ def handle_drag_and_drop(self, events):
 
 The main menu provides options for starting a new game, configuring settings, and viewing game rules.
 
-[Main Menu Screenshot](path/to/main_menu_screenshot.png)
-
+![Main Menu Screenshot](./readme_images/home_screen.png)
+![Game Rules Screenshot](./readme_images/game_rules.png)
+![Game Example Screenshot](./readme_images/game_examples.png)
 **Key Features:**
 - New Game button to start a fresh game
 - Rules button for accessing game instructions
@@ -485,7 +480,7 @@ The main menu provides options for starting a new game, configuring settings, an
 
 The player setup screen allows configuring player names and the number of players for the game.
 
-[Player Setup Screenshot](path/to/player_setup_screenshot.png)
+![Player Setup Screenshot](./readme_images/player_setup.png)
 
 **Key Features:**
 - Player name input fields
@@ -497,7 +492,7 @@ The player setup screen allows configuring player names and the number of player
 
 The turn screen displays information about the current player's turn along with game statistics.
 
-[Turn Screen Screenshot](./readme_images/turn_screen.png)
+![Turn Screen Screenshot](./readme_images/turn_screen.png)
 
 **Key Features:**
 - Clear indication of the current player
@@ -509,7 +504,7 @@ The turn screen displays information about the current player's turn along with 
 
 The main gameplay screen with the board, player rack, and game controls.
 
-[Game Board Screenshot](path/to/game_board_screenshot.png)
+![Game Board Screenshot](./readme_images/game_board.png)
 
 **Key Features:**
 - Drag-and-drop tile manipulation
