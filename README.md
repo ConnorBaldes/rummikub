@@ -57,9 +57,78 @@ Be the first player to play all the tiles from your rack by forming them into va
 
 The standard Rummikub set consists of 106 tiles:
 - 104 number tiles (1-13 in four colors: red, blue, black, and yellow), with two copies of each
-- 2 joker tiles (wild cards that can represent any tile)
 
-[Tile Set Example](path/to/tile_set_example.png)
+<div style="display: flex; justify-content: center;">
+  <img src="./rummikub/assets/tiles_2/tile_1_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_2_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_3_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_4_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_5_red.png" width="5%" style="margin: 0 5px;" lt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_6_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_8_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_10_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_11_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_12_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_13_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 20px"></div>
+<div style="display: flex; justify-content: center;">
+  <img src="./rummikub/assets/tiles_2/tile_1_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_2_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_3_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="5%" style="margin: 0 5px;" lt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_6_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_7_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_8_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_10_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_11_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_12_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_13_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 20px"></div>
+<div style="display: flex; justify-content: center;">
+  <img src="./rummikub/assets/tiles_2/tile_1_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_2_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_3_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_4_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_5_black.png" width="5%" style="margin: 0 5px;" lt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_6_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_7_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_8_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_9_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_10_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_11_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_12_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_13_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 20px"></div>
+<div style="display: flex; justify-content: center;">
+  <img src="./rummikub/assets/tiles_2/tile_1_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_2_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_3_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_4_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_5_orange.png" width="5%" style="margin: 0 5px;" lt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_6_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_7_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_8_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_9_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_10_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_11_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_12_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_13_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 50px"></div>
+
+- 2 joker tiles (wild cards that can represent any tile)
+<div style="display: flex; justify-content: center;">
+    <img src="./rummikub/assets/tiles_2/tile_joker_1.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+    <img src="./rummikub/assets/tiles_2/tile_joker_2.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 50px"></div>
 
 ### Valid Sets
 
@@ -68,13 +137,28 @@ There are two types of valid sets in Rummikub:
 #### Groups
 A group consists of **three or four tiles of the same number in different colors**.
 
-[Valid Groups Examples](path/to/valid_groups.png)
+<div style="display: flex; justify-content: left;">
+  <img src="./rummikub/assets/tiles_2/tile_7_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_7_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 20px"></div>
+<div style="display: flex; justify-content: left;">
+  <img src="./rummikub/assets/tiles_2/tile_4_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_4_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_4_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 20px"></div>
 
 #### Runs
 A run consists of **three or more consecutive numbers all in the same color**.
-
-[Valid Runs Examples](path/to/valid_runs.png)
-
+<div style="display: flex; justify-content: left;">
+  <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_8_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 20px"></div>
 The number 1 is always the lowest number and cannot follow 13 (no wrapping around).
 
 ### Initial Meld
@@ -82,6 +166,18 @@ The number 1 is always the lowest number and cannot follow 13 (no wrapping aroun
 - Each player must make an initial meld of tiles totaling at least 30 points
 - These tiles must come from the player's rack and cannot use tiles already on the table
 - A joker used in the initial meld scores the value of the tile it represents
+<div style="display: flex; justify-content: left;">
+  <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_10_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_11_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 20px"></div>
+<div style="display: flex; justify-content: left;">
+  <img src="./rummikub/assets/tiles_2/tile_10_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_10_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./rummikub/assets/tiles_2/tile_10_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
+</div>
+<div style="height: 20px"></div>
 
 ### Manipulation
 
