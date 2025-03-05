@@ -1,6 +1,7 @@
 # Rummikub Game Implementation
 
 A comprehensive implementation of the classic Rummikub tile game built with Python and Pygame.
+![Rummikub implementation game play](./readme_images/rummikub_gameplay.png)
 
 ## Table of Contents
 
