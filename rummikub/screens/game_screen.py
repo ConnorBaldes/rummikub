@@ -1,4 +1,3 @@
-# Updated sections for game_screen.py
 import pygame
 from rummikub.tile import Tile
 from rummikub.board import Board
@@ -35,12 +34,39 @@ class GameScreen:
         # Load images
         self.draw_button_img = pygame.image.load("./rummikub/assets/buttons/draw_button.png")
         self.end_button_img = pygame.image.load("./rummikub/assets/buttons/end_turn_button.png")
-        self.player_rack_img = pygame.image.load("./rummikub/assets/rack.png")
+        # Create a new reset button image or use a placeholder for now
+        try:
+            self.reset_button_img = pygame.image.load("./rummikub/assets/buttons/reset_button.png")
+        except:
+            # If the reset button image doesn't exist, create a similar sized surface
+            self.reset_button_img = pygame.Surface(self.end_button_img.get_size())
+            self.reset_button_img.fill((50, 100, 200))  # Blue background
         
-        # Define positions
-        self.draw_button_rect = self.draw_button_img.get_rect(topleft=(50, 1900))
-        self.end_button_rect = self.end_button_img.get_rect(topright=(3350, 1900))
+        self.player_rack_img = pygame.image.load("./rummikub/assets/rack.png")
         self.player_rack_rect = self.player_rack_img.get_rect(midbottom=(1700, 2500))
+        
+        # Calculate button positions based on player rack position
+        right_side_x = 3300  # Position from right edge of screen
+        
+        # Calculate the vertical center of the player rack
+        rack_center_y = self.player_rack_rect.centery
+        
+        # Button spacing - adjust as needed
+        button_spacing = 150  # Vertical spacing between buttons
+        
+        # Position buttons vertically centered relative to the rack
+        # with the middle button (End Turn) aligned with rack center
+        self.draw_button_rect = self.draw_button_img.get_rect(
+            center=(right_side_x, rack_center_y - button_spacing)
+        )
+        
+        self.end_button_rect = self.end_button_img.get_rect(
+            center=(right_side_x, rack_center_y)
+        )
+        
+        self.reset_button_rect = self.reset_button_img.get_rect(
+            center=(right_side_x, rack_center_y + button_spacing)
+        )
         
         # Create semi-transparent surfaces for board area
         self.board_area = pygame.Surface((3400, 1760), pygame.SRCALPHA)
@@ -49,6 +75,7 @@ class GameScreen:
         # Track hover state for buttons
         self.draw_button_hover = False
         self.end_button_hover = False
+        self.reset_button_hover = False
         
         # Try to initialize sound system
         try:
@@ -85,6 +112,7 @@ class GameScreen:
         mouse_pos = pygame.mouse.get_pos()
         self.draw_button_hover = self.draw_button_rect.collidepoint(mouse_pos)
         self.end_button_hover = self.end_button_rect.collidepoint(mouse_pos)
+        self.reset_button_hover = self.reset_button_rect.collidepoint(mouse_pos)
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -104,10 +132,12 @@ class GameScreen:
                             f"{self.game.players[self.game.current_turn].name} drew a tile.",
                             color_name='highlight'
                         )
+                        self.game.statistics['tiles_drawn'] += 1
                         self.play_sound('draw_tile')
                         self.game.next_turn()
                 
                 elif self.end_button_rect.collidepoint(mouse_pos):
+                    # Modified behavior: Check validity but don't reset on invalid
                     if self.game.validate_turn():
                         self.message_system.add_message(
                             "Valid move! Turn completed.",
@@ -128,12 +158,22 @@ class GameScreen:
                         else:
                             self.game.next_turn()
                     else:
+                        # Just show message but don't reset tiles
                         self.message_system.add_message(
-                            "Invalid move! Returning tiles to previous positions.",
+                            "Invalid move! Use Reset button to return tiles to previous positions.",
                             color_name='invalid'
                         )
+                        self.game.statistics['invalid_moves'] += 1
                         self.play_sound('invalid_move')
-                        self.board.reset_board()
+                
+                elif self.reset_button_rect.collidepoint(mouse_pos):
+                    # New functionality: Reset tiles to previous positions
+                    self.board.reset_board()
+                    self.message_system.add_message(
+                        "Tiles reset to start of turn.",
+                        color_name='highlight'
+                    )
+                    self.play_sound('tile_place')
                 
                 # Continue with original tile dragging code
                 # Check player rack first
@@ -241,7 +281,7 @@ class GameScreen:
         # Draw player rack and UI elements
         self.screen.blit(self.player_rack_img, self.player_rack_rect)
         
-        # Draw themed buttons
+        # Draw themed buttons in their new positions
         ThemeManager.draw_button(
             self.screen, 
             self.draw_button_rect,
@@ -256,6 +296,15 @@ class GameScreen:
             "End Turn",
             color_name='button_danger',
             hover=self.end_button_hover
+        )
+        
+        # Draw the new Reset Tiles button
+        ThemeManager.draw_button(
+            self.screen, 
+            self.reset_button_rect,
+            "Reset Tiles",
+            color_name='button_info',  # Assuming 'button_info' exists in your theme
+            hover=self.reset_button_hover
         )
         
         # Draw player tiles and board

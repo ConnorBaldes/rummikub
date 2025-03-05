@@ -108,7 +108,7 @@ class Game:
         self.current_turn = (self.current_turn + 1) % len(self.players)
         self.statistics['turns_played'] += 1
         
-        turn_message = f"{self.players[self.current_turn].name}, press Continue to play your turn."
+        turn_message = f"{self.players[self.current_turn].name}"
         
         # Create statistics message
         stats_message = (f"Game Statistics: {self.statistics['turns_played']} turns played, "
@@ -174,18 +174,23 @@ class Game:
     def check_for_win(self) -> bool:
         """
         Checks if the current player has any tiles left in their tile list.
-        This function should be called after validating the board sets and
-        before switching turns, to check if the player who just ended their turn has won.
         
         Returns:
             True if the current player has no tiles left (winning the game), otherwise False.
         """
         current_player = self.players[self.current_turn]
         if len(current_player.tiles) == 0:
-            print(f"Player {current_player.name if hasattr(current_player, 'name') else self.current_turn} has no tiles left and wins the game!")
+            print(f"Player {current_player.name} has no tiles left and wins the game!")
+            self.game_over = True
+            self.winner = current_player.name
+            
+            # Return to setup menu with win message
+            win_message = f"{current_player.name} wins the game with {self.statistics['turns_played']} turns played!"
+            self.menu_screen = SetupMenu(self, win_message)
+            self.change_screen(self.menu_screen)
             return True
         else:
-            print(f"Player {current_player.name if hasattr(current_player, 'name') else self.current_turn} still has {len(current_player.tiles)} tiles left.")
+            print(f"Player {current_player.name} still has {len(current_player.tiles)} tiles left.")
             return False
 
 

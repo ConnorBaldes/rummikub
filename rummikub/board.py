@@ -111,6 +111,7 @@ class Board:
         """Updates sets by finding connected tile groups using Kruskal's algorithm."""
         self.graph.update_all_tiles(self.tiles)
         forests = self.graph.kruskals_msf(self.tiles, max_weight=200)
+        self.game.statistics['valid_sets_formed'] = len(forests)
         self.graph.print_forests(forests)
         
         # Reset all jokers first

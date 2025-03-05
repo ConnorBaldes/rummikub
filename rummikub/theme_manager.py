@@ -1,4 +1,3 @@
-# theme_manager.py
 import pygame
 from typing import Dict, Tuple, Optional
 
@@ -15,6 +14,7 @@ class ThemeManager:
         'button_text': (255, 255, 255), # White button text
         'button_success': (50, 200, 50), # Green success button
         'button_danger': (200, 50, 50),  # Red danger button
+        'button_info': (50, 100, 200),   # Blue info button (new)
         'tile_border': (0, 0, 0),       # Black border
         'valid': (0, 255, 0, 128),      # Green translucent overlay
         'invalid': (255, 0, 0, 128),    # Red translucent overlay
@@ -28,7 +28,7 @@ class ThemeManager:
         'heading': {'size': 50, 'bold': True},
         'normal': {'size': 36, 'bold': False},
         'small': {'size': 28, 'bold': False},
-        'button': {'size': 40, 'bold': True},
+        'button': {'size': 35, 'bold': True},
     }
     
     # Cached font objects
