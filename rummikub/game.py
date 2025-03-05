@@ -1,3 +1,4 @@
+# Updated sections for game.py
 import pygame
 from rummikub.player import Player
 from rummikub.deck import Deck
@@ -5,8 +6,15 @@ from rummikub.screens.game_screen import GameScreen
 from rummikub.screens.menu import SetupMenu, TurnMenu
 
 class Game:
+    """
+    Main game controller that manages game state, players, and screens.
+    
+    This class handles the overall game flow, screen transitions, and game rules.
+    """
+    
     def __init__(self):
-        self.deck = Deck("./rummikub/assets/tiles")
+        """Initialize the game with default settings."""
+        self.deck = Deck("./rummikub/assets/tiles_2")
         pygame.init()
         self.screen = pygame.display.set_mode((3400, 2500))
         pygame.display.set_caption("Rummikub")
@@ -14,17 +22,31 @@ class Game:
         self.running = True
         self.current_turn = 0
         self.players = []  # Will be set after name submission
+        
+        # Add game state tracking
+        self.game_over = False
+        self.winner = None
+        
+        # Add statistics tracking
+        self.statistics = {
+            'turns_played': 0,
+            'tiles_drawn': 0,
+            'valid_sets_formed': 0,
+            'invalid_moves': 0
+        }
 
-        # Use our new SetupMenu for initial configuration.
+        # Use our SetupMenu for initial configuration
         self.menu_screen = SetupMenu(self)
         self.current_screen = self.menu_screen
 
         self.game_screen = GameScreen(self)
 
     def change_screen(self, new_screen):
+        """Change the active screen."""
         self.current_screen = new_screen
 
     def handle_events(self):
+        """Process game events."""
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
@@ -32,9 +54,11 @@ class Game:
         self.current_screen.handle_events(events)
 
     def update(self):
+        """Update game state."""
         self.current_screen.update()
 
     def render(self):
+        """Render the current screen."""
         if self.current_screen != self.game_screen:
             self.current_screen.draw(self.screen)
             pygame.display.flip()
@@ -42,7 +66,7 @@ class Game:
             self.current_screen.render()
 
     def populate_rack(self):
-        """Places the current player's tiles in a neatly formatted rack layout."""
+        """Place the current player's tiles in a neatly formatted rack layout."""
         left_margin = 35
         top_margin = 2015
         right_margin = 35  # Margin on the right side
@@ -52,17 +76,17 @@ class Game:
         if not current_player.tiles:
             return
 
-        # Get tile dimensions from the first tile.
+        # Get tile dimensions from the first tile
         sample_tile = next(iter(current_player.tiles.values()))
         tile_width = sample_tile.image.get_width()
         tile_height = sample_tile.image.get_height()
 
-        # Compute available width and max number of columns.
+        # Compute available width and max number of columns
         screen_width = self.screen.get_width()
         available_width = screen_width - left_margin - right_margin
         num_columns = max(1, available_width // (tile_width + gap))
 
-        # Arrange tiles in a grid pattern.
+        # Arrange tiles in a grid pattern
         for idx, tile in enumerate(current_player.tiles.values()):
             row = idx // num_columns
             col = idx % num_columns
@@ -71,7 +95,7 @@ class Game:
             tile.set_coordinates(x, y)
 
     def save_positions(self):
-        """Saves the starting positions of all tiles before a turn begins."""
+        """Save the starting positions of all tiles before a turn begins."""
         for tile in self.players[self.current_turn].tiles.values():
             tile.save_turn_start_position()
             tile.save_pre_drag_pos()
@@ -80,26 +104,37 @@ class Game:
             tile.save_pre_drag_pos()
 
     def next_turn(self):
-        """Advances to the next player's turn and updates the turn menu."""
+        """Advance to the next player's turn and update the turn menu."""
         self.current_turn = (self.current_turn + 1) % len(self.players)
+        self.statistics['turns_played'] += 1
+        
         turn_message = f"{self.players[self.current_turn].name}, press Continue to play your turn."
+        
+        # Create statistics message
+        stats_message = (f"Game Statistics: {self.statistics['turns_played']} turns played, "
+                        f"{self.statistics['tiles_drawn']} tiles drawn, "
+                        f"{len(self.deck)} tiles remaining in deck")
 
-        # Populate rack and save positions before switching screens.
+        # Populate rack and save positions before switching screens
         self.populate_rack()
         self.save_positions()
 
-        self.change_screen(TurnMenu(self, turn_message))
+        self.change_screen(TurnMenu(self, turn_message, stats_message))
         print(f"{self.players[self.current_turn].name}'s turn")
 
-
+    # Keep other methods, but enhance with statistics tracking where relevant
+    
     def validate_turn(self) -> bool:
-
+        """Validate the current player's turn."""
         if len(self.game_screen.board.added_tiles) > 0:
             if self.check_initial_meld():
                 if self.game_screen.board.validate_sets():
+                    self.statistics['valid_sets_formed'] += 1
                     return True
         else:
             print('No tiles played.')
+        
+        self.statistics['invalid_moves'] += 1
         return False
 
 

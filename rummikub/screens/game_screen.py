@@ -1,45 +1,150 @@
+# Updated sections for game_screen.py
 import pygame
 from rummikub.tile import Tile
 from rummikub.board import Board
 from rummikub.player import Player
-
+from rummikub.theme_manager import ThemeManager
+from rummikub.message_system import MessageSystem
 
 class GameScreen:
-    def __init__(self, game):
+    """
+    Main game screen that handles rendering and interaction with the game board.
+    
+    This screen shows the game board, player rack, and game controls.
+    It handles tile interaction, move validation, and visual feedback.
+    """
 
+    def __init__(self, game):
+        """
+        Initialize the game screen.
+        
+        Args:
+            game: The main game instance
+        """
         self.game = game
         self.screen = pygame.display.set_mode((3400, 2500))
         self.board = Board(game)
-        self.dragging: Tile = None
+        self.dragging = None
         self.dragged_tile = None
         self.dragged_from = None
+        
+        # Initialize theme and feedback systems
+        ThemeManager.initialize()
+        self.message_system = MessageSystem()
 
         # Load images
-        self.draw_button_img = pygame.image.load("./rummikub/assets/draw_button.png")
-        self.end_button_img = pygame.image.load("./rummikub/assets/end_turn_button.png")
+        self.draw_button_img = pygame.image.load("./rummikub/assets/buttons/draw_button.png")
+        self.end_button_img = pygame.image.load("./rummikub/assets/buttons/end_turn_button.png")
         self.player_rack_img = pygame.image.load("./rummikub/assets/rack.png")
         
         # Define positions
         self.draw_button_rect = self.draw_button_img.get_rect(topleft=(50, 1900))
         self.end_button_rect = self.end_button_img.get_rect(topright=(3350, 1900))
         self.player_rack_rect = self.player_rack_img.get_rect(midbottom=(1700, 2500))
+        
+        # Create semi-transparent surfaces for board area
+        self.board_area = pygame.Surface((3400, 1760), pygame.SRCALPHA)
+        self.board_area.fill((*ThemeManager.get_color('board_area')[:3], 128))
+        
+        # Track hover state for buttons
+        self.draw_button_hover = False
+        self.end_button_hover = False
+        
+        # Try to initialize sound system
+        try:
+            pygame.mixer.init()
+            self.sound_enabled = True
+            self.load_sounds()
+        except:
+            self.sound_enabled = False
+            print("Sound system initialization failed. Sounds disabled.")
 
+    def load_sounds(self):
+        """Load game sound effects."""
+        # These paths assume you'll create/acquire these sound files
+        self.sounds = {
+            'tile_place': pygame.mixer.Sound('./rummikub/assets/sounds/tile_place.wav'),
+            'invalid_move': pygame.mixer.Sound('./rummikub/assets/sounds/invalid_move.wav'),
+            'draw_tile': pygame.mixer.Sound('./rummikub/assets/sounds/draw_tile.wav'),
+            'valid_set': pygame.mixer.Sound('./rummikub/assets/sounds/valid_set.wav'),
+            'win': pygame.mixer.Sound('./rummikub/assets/sounds/win.wav')
+        }
 
+    def play_sound(self, sound_name):
+        """
+        Play a sound effect if available.
+        
+        Args:
+            sound_name (str): Name of the sound to play
+        """
+        if self.sound_enabled and sound_name in self.sounds:
+            self.sounds[sound_name].play()
 
     def handle_events(self, events):
+        # Update hover states for buttons
+        mouse_pos = pygame.mouse.get_pos()
+        self.draw_button_hover = self.draw_button_rect.collidepoint(mouse_pos)
+        self.end_button_hover = self.end_button_rect.collidepoint(mouse_pos)
 
         for event in events:
-
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                # Check player rack first.
+                
+                # Handle button clicks with visual/audio feedback
+                if self.draw_button_rect.collidepoint(mouse_pos):
+                    if self.board.added_tiles:
+                        self.message_system.add_message(
+                            "Cannot draw while tiles are on the board!",
+                            color_name='invalid'
+                        )
+                        self.play_sound('invalid_move')
+                    else:
+                        self.game.players[self.game.current_turn].draw_tile()
+                        self.message_system.add_message(
+                            f"{self.game.players[self.game.current_turn].name} drew a tile.",
+                            color_name='highlight'
+                        )
+                        self.play_sound('draw_tile')
+                        self.game.next_turn()
+                
+                elif self.end_button_rect.collidepoint(mouse_pos):
+                    if self.game.validate_turn():
+                        self.message_system.add_message(
+                            "Valid move! Turn completed.",
+                            color_name='valid'
+                        )
+                        self.play_sound('valid_set')
+                        
+                        if self.game.check_for_win():
+                            winner = self.game.players[self.game.current_turn].name
+                            self.message_system.add_message(
+                                f"{winner} wins the game!",
+                                color_name='highlight',
+                                duration=5.0,
+                                font_name='title'
+                            )
+                            self.play_sound('win')
+                            # Could add a win screen transition here
+                        else:
+                            self.game.next_turn()
+                    else:
+                        self.message_system.add_message(
+                            "Invalid move! Returning tiles to previous positions.",
+                            color_name='invalid'
+                        )
+                        self.play_sound('invalid_move')
+                        self.board.reset_board()
+                
+                # Continue with original tile dragging code
+                # Check player rack first
                 for tile in self.game.players[self.game.current_turn].tiles.values():
                     if tile.rect.collidepoint(mouse_pos):
                         tile.start_drag(mouse_pos)
                         self.dragged_tile = tile
                         self.dragged_from = 'rack'
                         break
-                # If not in rack, check board tiles (all are draggable on board).
+                
+                # If not in rack, check board tiles
                 if self.dragged_tile is None:
                     for tile in self.board.tiles.values():
                         if tile.rect.collidepoint(mouse_pos):
@@ -48,76 +153,117 @@ class GameScreen:
                             self.dragged_from = 'board'
                             break
 
-
-                if self.draw_button_rect.collidepoint(event.pos):
-                    if self.board.added_tiles:
-                        print("Cannot draw a tile while you have tiles added to the board!")
-                    else:
-                        self.game.players[self.game.current_turn].draw_tile()
-                        self.game.next_turn()
-
-                elif self.end_button_rect.collidepoint(event.pos):
-                    if self.game.validate_turn():
-                        if self.game.check_for_win():
-                            break
-                        self.game.next_turn()
-                    else:
-                        self.board.reset_board()
-                        
-
             elif event.type == pygame.MOUSEMOTION and self.dragged_tile:
                 self.dragged_tile.update_drag(pygame.mouse.get_pos())
+                
+                # Provide visual feedback during dragging
+                if self.is_on_board(self.dragged_tile.rect):
+                    valid_drop = self.is_valid_drop(self.dragged_tile, self.board.tiles)
+                    self.dragged_tile.set_highlight(True, 'valid' if valid_drop else 'invalid')
+                else:
+                    self.dragged_tile.set_highlight(False)
 
             elif event.type == pygame.MOUSEBUTTONUP and self.dragged_tile:
                 self.dragged_tile.stop_drag()
-                # Decide where the tile was dropped:
+                self.dragged_tile.set_highlight(False)  # Clear highlight
+                
+                # Process the drop with audio feedback
                 if self.dragged_from == 'rack':
                     if self.is_on_board(self.dragged_tile.rect) and self.is_valid_drop(self.dragged_tile, self.board.tiles):
-                        # Valid drop from rack to board.
+                        # Valid drop from rack to board
                         self.game.players[self.game.current_turn].remove_tile(self.dragged_tile.id)
                         self.board.add_tile(self.dragged_tile)
                         self.board.update_sets()
                         self.board.snap_tile(self.dragged_tile)
-                        
+                        self.play_sound('tile_place')
                     else:
-                        # Invalid drop: revert to pre-drag position.
+                        # Invalid drop: revert to pre-drag position
                         self.dragged_tile.revert_to_pre_drag()
+                        self.play_sound('invalid_move')
+                        
                 elif self.dragged_from == 'board':
                     if self.is_on_board(self.dragged_tile.rect):
-                        # Dropped within board, but check for collisions.
+                        # Dropped within board, check for collisions
                         if not self.is_valid_drop(self.dragged_tile, self.board.tiles):
-                            # Collision detected: revert movement.
+                            # Collision detected: revert movement
                             self.dragged_tile.revert_to_pre_drag()
-                        # Else: leave tile at new board position.
-                        self.board.update_sets()
-                        self.board.snap_tile(self.dragged_tile)
-                        
+                            self.play_sound('invalid_move')
+                        else:
+                            # Valid move within board
+                            self.board.update_sets()
+                            self.board.snap_tile(self.dragged_tile)
+                            self.play_sound('tile_place')
                     else:
-                        # Dropped outside board.
+                        # Dropped outside board
                         if self.dragged_tile.id in self.board.added_tiles:
-                            # Allow removal back to rack.
+                            # Allow removal back to rack
                             removed_tile = self.board.remove_tile(self.dragged_tile.id)
                             if removed_tile:
                                 self.game.players[self.game.current_turn].add_tile(removed_tile)
+                                self.play_sound('tile_place')
                         else:
-                            # Pre-existing board tile: revert to its turn start.
+                            # Pre-existing board tile: revert to its turn start
                             self.dragged_tile.revert_to_turn_start()
+                            self.play_sound('invalid_move')
+                
                 self.dragged_tile = None
                 self.dragged_from = None
 
     def update(self):
-        pass
-    
+        """Update game screen components."""
+        self.message_system.update()
+
     def render(self):
-        self.screen.fill((0, 128, 0))  # Clear screen
- 
-        # Draw player rack and board buttons
-        self.screen.blit(self.draw_button_img, self.draw_button_rect.topleft)
-        self.screen.blit(self.end_button_img, self.end_button_rect.topleft)
+        """Render the game screen with all UI components."""
+        # Clear screen with theme background
+        self.screen.fill(ThemeManager.get_color('background'))
+        
+        # Draw board area with semi-transparent overlay
+        self.screen.blit(self.board_area, (0, 0))
+        
+        # Draw current player indicator
+        current_player = self.game.players[self.game.current_turn]
+        player_text = ThemeManager.render_text(
+            f"Current Player: {current_player.name}",
+            font_name='heading',
+            color_name='highlight'
+        )
+        self.screen.blit(player_text, (20, 20))
+        
+        # Draw deck info
+        deck_text = ThemeManager.render_text(
+            f"Tiles in deck: {len(self.game.deck)}",
+            font_name='normal',
+            color_name='text'
+        )
+        self.screen.blit(deck_text, (20, 80))
+        
+        # Draw player rack and UI elements
         self.screen.blit(self.player_rack_img, self.player_rack_rect)
+        
+        # Draw themed buttons
+        ThemeManager.draw_button(
+            self.screen, 
+            self.draw_button_rect,
+            "Draw Tile",
+            color_name='button_success',
+            hover=self.draw_button_hover
+        )
+        
+        ThemeManager.draw_button(
+            self.screen, 
+            self.end_button_rect,
+            "End Turn",
+            color_name='button_danger',
+            hover=self.end_button_hover
+        )
+        
+        # Draw player tiles and board
         self.draw_player_tiles()
-        # Draw board tiles
         self.board.draw(self.screen)
+        
+        # Draw messages last (on top)
+        self.message_system.draw(self.screen)
         
         pygame.display.update()
 

@@ -146,14 +146,16 @@ class SetupMenu:
         self.menu.draw(surface)
 
 
+# Updated section for menu.py TurnMenu class
 class TurnMenu:
     """Displays the current player's turn and prompts them to continue."""
 
-    def __init__(self, game, turn_message):
+    def __init__(self, game, turn_message, stats_message=None):
         self.game = game
         self.turn_message = turn_message
+        self.stats_message = stats_message
 
-        # Define a custom theme consistent with SetupMenu
+        # Define a custom theme consistent with ThemeManager
         custom_theme = themes.THEME_DARK.copy()
         custom_theme.background_color = (0, 128, 0)  # Green background
         custom_theme.title_font_size = 60
@@ -168,6 +170,12 @@ class TurnMenu:
         )
 
         self.add_turn_display()
+        
+        # Add statistics if available
+        if self.stats_message:
+            self.menu.add.label(self.stats_message, font_size=32, font_color=(200, 200, 255))
+            self.menu.add.vertical_margin(20)
+            
         self.add_continue_button()
 
     def add_turn_display(self):
