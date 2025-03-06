@@ -408,9 +408,13 @@ def load_sounds(self):
 
 The main menu provides options for starting a new game, configuring settings, and viewing game rules.
 
-![Main Menu Screenshot](./readme_images/home_screen.png)
-![Game Rules Screenshot](./readme_images/game_rules.png)
-![Game Example Screenshot](./readme_images/game_examples.png)
+
+<div style="display: flex; justify-content: left;">
+  <img src="./readme_images/home_screen.png" width="33%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./readme_images/game_rules.png" width="33%" style="margin: 0 5px;" alt="Image 1">
+  <img src="./readme_images/game_examples.png" width="33%" style="margin: 0 5px;" alt="Image 1">
+</div>
+
 **Key Features:**
 - New Game button to start a fresh game
 - Rules button for accessing game instructions
@@ -421,7 +425,9 @@ The main menu provides options for starting a new game, configuring settings, an
 
 The player setup screen allows configuring player names and the number of players for the game.
 
-![Player Setup Screenshot](./readme_images/player_setup.png)
+<div style="display: flex; justify-content: left;">
+    <img src="./readme_images/player_setup.png" width="50%" style="margin: 0 5px;" alt="Image 1">
+</div>
 
 **Key Features:**
 - Player name input fields
@@ -433,7 +439,9 @@ The player setup screen allows configuring player names and the number of player
 
 The turn screen displays information about the current player's turn along with game statistics.
 
-![Turn Screen Screenshot](./readme_images/turn_screen.png)
+<div style="display: flex; justify-content: left;">
+    <img src="./readme_images/turn_screen.png" width="50%" style="margin: 0 5px;" alt="Image 1">
+</div>
 
 **Key Features:**
 - Clear indication of the current player
@@ -445,7 +453,9 @@ The turn screen displays information about the current player's turn along with 
 
 The main gameplay screen with the board, player rack, and game controls.
 
-![Game Board Screenshot](./readme_images/game_board.png)
+<div style="display: flex; justify-content: left;">
+    <img src="./readme_images/game_board.png" width="50%" style="margin: 0 5px;" alt="Image 1">
+</div>
 
 **Key Features:**
 - Drag-and-drop tile manipulation
@@ -453,15 +463,3 @@ The main gameplay screen with the board, player rack, and game controls.
 - Current player's rack
 - End Turn button and other controls
 - Visual feedback for valid and invalid moves
-
-### End Game
-
-The end game screen displayed when a player wins, showing final scores and stats.
-
-
-**Key Features:**
-- Winner announcement
-- Score breakdown for all players
-- Game statistics summary
-- Play Again option
-- Return to Main Menu button
