@@ -129,7 +129,6 @@ class Game:
         if len(self.game_screen.board.added_tiles) > 0:
             if self.check_initial_meld():
                 if self.game_screen.board.validate_sets():
-                    self.statistics['valid_sets_formed'] += 1
                     return True
         else:
             print('No tiles played.')
