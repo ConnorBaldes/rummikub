@@ -3,37 +3,6 @@
 A comprehensive implementation of the classic Rummikub tile game built with Python and Pygame.
 ![Rummikub implementation game play](./readme_images/rummikub_gameplay.png)
 
-## Table of Contents
-
-- [Game Overview](#game-overview)
-- [Game Rules](#game-rules)
-  - [Objective](#objective)
-  - [Tile Components](#tile-components)
-  - [Valid Sets](#valid-sets)
-  - [Initial Meld](#initial-meld)
-  - [Manipulation](#manipulation)
-  - [Jokers](#jokers)
-  - [Winning](#winning)
-  - [Scoring](#scoring)
-- [Project Architecture](#project-architecture)
-  - [Core Components](#core-components)
-  - [Code Organization](#code-organization)
-- [Technical Implementation](#technical-implementation)
-  - [Tile Management](#tile-management)
-  - [Graph-Based Set Detection](#graph-based-set-detection)
-  - [Joker Handling](#joker-handling)
-  - [Move Validation](#move-validation)
-  - [UI Implementation](#ui-implementation)
-- [Game Screens](#game-screens)
-  - [Main Menu](#main-menu)
-  - [Player Setup](#player-setup)
-  - [Turn Screen](#turn-screen)
-  - [Game Board](#game-board)
-  - [End Game](#end-game)
-- [Installation and Setup](#installation-and-setup)
-- [Usage](#usage)
-- [Development Roadmap](#development-roadmap)
-
 ## Game Overview
 
 Rummikub is a tile-based game that combines elements of rummy and mahjong, where players strategically place tiles to form valid sets and aim to be the first to empty their rack. This implementation provides a complete digital experience with intuitive drag-and-drop mechanics, automatic rule validation, and a polished user interface.
