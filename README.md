@@ -256,12 +256,6 @@ class Graph:
 - Applies geometric distance calculations to determine tile proximity
 - Optimizes tile operations with NumPy arrays for performance
 
-### User Interface System
-- **ThemeManager**: Centralizes UI styling with consistent colors, fonts, and rendering
-- **MessageSystem**: Provides dynamic, temporally managed game notifications
-- **Screen Classes**: Separate screens for different game states (setup, turn transitions, gameplay)
-- **pygame_menu**: Integration for structured menu systems with custom theming
-
 
 ## Menu System Implementation
 The menu system (menu.py) provides a comprehensive user interface for game setup and transitions:
