@@ -17,8 +17,6 @@ Rummikub is a tile-based game that combines elements of rummy and mahjong, where
 - **Multi-player Support**: Play with 2-4 players (or up to 6 with XP mode)
 - **Polished UI**: Clean, responsive interface with visual feedback
 
-## Game Rules
-
 ### Objective
 
 Be the first player to play all the tiles from your rack by forming them into valid sets.
