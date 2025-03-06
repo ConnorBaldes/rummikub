@@ -329,11 +329,6 @@ class GameScreen:
             if other.id != tile.id and tile.rect.colliderect(other.rect):
                 return False
         return True
-
-
-    # Function to check if a dragged tile collides with any other tile
-    def check_overlap(self, dragged_tile):
-        for other_tile in self.board.get_tile_positions():
-            if other_tile.id != dragged_tile.id and dragged_tile.rect.colliderect(other_tile.rect):
-                return True  # Collision detected
-        return False
+    
+    def draw(self):
+        pass

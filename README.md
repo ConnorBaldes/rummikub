@@ -180,7 +180,7 @@ All manipulations must result in valid sets with no loose tiles left on the tabl
 
 # Architecture & Technical Implementation
 
-## File Organization
+## Rummikub Directory
 ```
 rummikub/
 ├── assets/                 # Game assets (images, sounds)
@@ -196,6 +196,29 @@ rummikub/
 ├── tile.py                 # Tile objects and behaviors
 ├── utils.py                # Helper utilities and algorithms
 └── main.py                 # Application entry point
+```
+## Test Directory
+```
+tests/
+├── __init__.py
+├── conftest.py                # Shared fixtures and configuration
+├── unit/                      # Unit tests for individual components
+│   ├── __init__.py
+│   ├── test_board.py
+│   ├── test_deck.py
+│   ├── test_game.py
+│   ├── test_message_system.py
+│   ├── test_player.py
+│   ├── test_theme_manager.py
+│   ├── test_tile.py
+│   └── test_utils.py
+├── integration/               # Tests for component interactions
+│   ├── __init__.py
+│   ├── test_game_board.py
+│   └── test_player_actions.py
+└── functional/                # End-to-end gameplay tests
+    ├── __init__.py
+    └── test_gameplay.py
 ```
 
 ## System Architecture

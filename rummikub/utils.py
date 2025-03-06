@@ -154,4 +154,5 @@ class Graph:
         """Display the current grouped sets of active tiles."""
         print('Active Sets:')
         for vertices, edges in forests:
-            print('{', [self.vertex_data[v][2] for v in vertices], '}')
+            # Convert np.int64 to regular ints for cleaner output
+            print('{', [int(self.vertex_data[v][2]) for v in vertices], '}')
