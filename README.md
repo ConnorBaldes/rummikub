@@ -216,11 +216,18 @@ All manipulations must result in valid sets with no loose tiles left on the tabl
 The Rummikub game is built with a structured, object-oriented architecture using Python and Pygame. The system separates game logic from rendering concerns and employs several design patterns to maintain clean, maintainable code.
 ![System architecture image](./readme_images/system_architecture.png)
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
-  <!-- Main Project Structure -->
-  <div style="flex: 1; min-width: 320px;">
-    <h3>Project Root</h3>
-    <pre>
+
+<h2 align="left">Project Structure</h2>
+
+<table width="100%">
+  <tr>
+    <th align="center" width="33%"><h3>Project Root</h3></th>
+    <th align="center" width="33%"><h3>Core Game Module</h3></th>
+    <th align="center" width="33%"><h3>Test Suite</h3></th>
+  </tr>
+  <tr valign="top">
+    <td>
+      <pre>
 rummikub-project/
 ├── main.py
 ├── README.md
@@ -235,13 +242,10 @@ rummikub-project/
 └── requirements/
     ├── environment.yaml
     └── requirements.txt
-    </pre>
-  </div>
-
-  <!-- Rummikub Module -->
-  <div style="flex: 1; min-width: 320px;">
-    <h3>Core Game Module</h3>
-    <pre>
+      </pre>
+    </td>
+    <td>
+      <pre>
 rummikub/
 ├── assets/
 ├── screens/
@@ -255,13 +259,10 @@ rummikub/
 ├── theme_manager.py
 ├── tile.py
 └── utils.py
-    </pre>
-  </div>
-
-  <!-- Test Suite -->
-  <div style="flex: 1; min-width: 320px;">
-    <h3>Test Suite</h3>
-    <pre>
+      </pre>
+    </td>
+    <td>
+      <pre>
 tests/
 ├── conftest.py
 ├── unit/
@@ -278,9 +279,10 @@ tests/
 │   └── test_player_actions.py
 └── functional/
     └── test_gameplay.py
-    </pre>
-  </div>
-</div>
+      </pre>
+    </td>
+  </tr>
+</table>
 
 ## Installation
 
