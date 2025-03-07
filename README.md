@@ -23,28 +23,24 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
             <img src="./rummikub/assets/tiles_2/tile_1_red.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_5_red.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_13_red.png" width="40">
         </td>
         <td width="20%" align="center">
             <strong>Blue Tiles (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_blue.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_13_blue.png" width="40">
         </td>
         <td width="20%" align="center">
             <strong>Black Tiles (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_black.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_5_black.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_9_black.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_13_black.png" width="40">
         </td>
         <td width="20%" align="center">
             <strong>Orange Tiles (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_orange.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_5_orange.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_9_orange.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_13_orange.png" width="40">
         </td>
         <td width="20%" align="center">
             <strong>Joker Tiles</strong><br>
@@ -83,7 +79,7 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
     </tr>
 </table>
 
-<table width="100%">
+<table align="center" width="100%">
     <tr>
         <th width="50%" align="center" >Valid Groups</th>
         <th width="50%" align="center" >Valid Runs</th>
