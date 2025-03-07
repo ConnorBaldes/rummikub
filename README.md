@@ -178,32 +178,160 @@ All manipulations must result in valid sets with no loose tiles left on the tabl
 
 
 
-# Architecture & Technical Implementation
+# Technical Architecture & Design
 
-## Rummikub Directory
-```
+<div style="border-left: 4px solid #0366d6; padding-left: 20px; margin-bottom: 20px;">
+  <h3>Core Architecture (MVC Pattern)</h3>
+  <ul>
+    <li><strong>Model:</strong> Game state management (Board, Player, Tile classes)</li>
+    <li><strong>View:</strong> Rendering and display logic (GameScreen, ThemeManager)</li>
+    <li><strong>Controller:</strong> Game flow and logic coordination (Game class)</li>
+  </ul>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
+  <div style="flex: 1; min-width: 300px; border: 1px solid #0366d6; padding: 15px; border-radius: 5px;">
+    <h3>Implementation Highlights</h3>
+    <ul>
+      <li><strong>Optimized Algorithms:</strong> NumPy-powered matrix operations for efficiency</li>
+      <li><strong>State Preservation:</strong> Robust game state tracking between turns</li>
+      <li><strong>Error Handling:</strong> Graceful recovery from invalid moves with clear feedback</li>
+      <li><strong>Type Annotations:</strong> Comprehensive Python type hints for improved code clarity</li>
+      <li><strong>Duck Typing:</strong> Flexible object interfaces following Pythonic principles</li>
+    </ul>
+  </div>
+
+  <div style="flex: 1; min-width: 300px; border: 1px solid #0366d6; padding: 15px; border-radius: 5px;">
+    <h3>Design Patterns</h3>
+    <ul>
+      <li><strong>Singleton Pattern:</strong> ThemeManager ensures consistent styling</li>
+      <li><strong>Factory Pattern:</strong> Deck class produces tiles with standardized properties</li>
+      <li><strong>State Pattern:</strong> Screen manager handles transitions between game states</li>
+      <li><strong>Observer Pattern:</strong> Event system for notifications and UI updates</li>
+    </ul>
+  </div>
+</div>
+
+## System Architecture
+The Rummikub game is built with a structured, object-oriented architecture using Python and Pygame. The system separates game logic from rendering concerns and employs several design patterns to maintain clean, maintainable code.
+
+<div align="center">
+  <!-- Architecture Diagram -->
+  <div style="width: 95%; margin: 20px auto; border: 1px solid #ddd; border-radius: 6px; padding: 20px;">
+    <!-- Controller Layer -->
+    <div style="background-color: #0366d6; color: white; text-align: center; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+      <h3 style="margin: 0;">Game Controller (game.py)</h3>
+      <p style="margin: 5px 0 0;">Manages game flow, state transitions, and inter-component communication</p>
+    </div>
+    
+<!-- Three main layers -->
+<div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
+    <!-- Game Logic Layer -->
+    <div style="flex: 1; min-width: 200px; background-color: #f1f1f1; padding: 15px; border-radius: 5px;">
+    <h4 style="margin-top: 0; text-align: center;">Game Logic</h4>
+    <ul style="list-style-type: none; padding: 0;">
+        <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>board.py</strong>: Game state & validation</li>
+        <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>deck.py</strong>: Tile creation & distribution</li>
+        <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>tile.py</strong>: Tile properties & behaviors</li>
+        <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>player.py</strong>: Player state & actions</li>
+    </ul>
+    </div>
+      
+<!-- UI Layer -->
+<div style="flex: 1; min-width: 200px; background-color: #f1f1f1; padding: 15px; border-radius: 5px;">
+<h4 style="margin-top: 0; text-align: center;">Presentation Layer</h4>
+<ul style="list-style-type: none; padding: 0;">
+    <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>theme_manager.py</strong>: UI styling</li>
+    <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>message_system.py</strong>: User notifications</li>
+    <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>screens/</strong>: Screen rendering modules</li>
+    <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>assets/</strong>: Game resources & media</li>
+</ul>
+</div>
+      
+<!-- Utilities Layer -->
+<div style="flex: 1; min-width: 200px; background-color: #f1f1f1; padding: 15px; border-radius: 5px;">
+<h4 style="margin-top: 0; text-align: center;">Infrastructure</h4>
+<ul style="list-style-type: none; padding: 0;">
+    <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>utils.py</strong>: Helper functions</li>
+    <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>main.py</strong>: Application entry point</li>
+    <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>requirements/</strong>: Dependencies</li>
+    <li style="background-color: white; margin: 5px 0; padding: 8px; border-radius: 4px;"><strong>docs/</strong>: Documentation</li>
+</ul>
+</div>
+</div>
+    
+<!-- External Dependencies -->
+<div style="background-color: #f1f8ff; border: 1px solid #c8e1ff; text-align: center; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+    <h4 style="margin: 0;">External Libraries</h4>
+    <div style="display: flex; justify-content: space-around; margin-top: 10px; flex-wrap: wrap;">
+    <div><strong>Pygame</strong>: Graphics & Input</div>
+    <div><strong>NumPy</strong>: Mathematical Operations</div>
+    <div><strong>pytest</strong>: Testing Framework</div>
+    </div>
+</div>
+    
+<!-- Testing Layer -->
+<div style="background-color: #dcffe4; border: 1px solid #bae6c5; padding: 10px; border-radius: 5px;">
+    <h4 style="margin: 0; text-align: center;">Test Suite</h4>
+    <div style="display: flex; justify-content: space-around; margin-top: 10px; flex-wrap: wrap;">
+    <div><strong>Unit Tests</strong>: Component validation</div>
+    <div><strong>Integration Tests</strong>: Component interaction</div>
+    <div><strong>Functional Tests</strong>: End-to-end scenarios</div>
+    </div>
+</div>
+  </div>
+</div>
+
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+  <!-- Main Project Structure -->
+  <div style="flex: 1; min-width: 320px;">
+    <h3>Project Root</h3>
+    <pre>
+rummikub-project/
+├── main.py
+├── README.md
+├── LICENSE
+├── .gitignore
+├── pytest.ini
+├── run_tests.py
+├── readme_images/
+├── docs/
+│   ├── rummikub_rules.pdf
+│   └── rummikub_project_description.odt
+└── requirements/
+    ├── environment.yaml
+    └── requirements.txt
+    </pre>
+  </div>
+
+  <!-- Rummikub Module -->
+  <div style="flex: 1; min-width: 320px;">
+    <h3>Core Game Module</h3>
+    <pre>
 rummikub/
-├── assets/                 # Game assets (images, sounds)
-├── screens/                # Screen management modules
-│   ├── menu.py             # Menu systems and initial setup
-│   └── game_screen.py      # Main gameplay screen
-├── board.py                # Board state and set validation
-├── deck.py                 # Tile creation and management
-├── game.py                 # Main game controller
-├── message_system.py       # User feedback notifications
-├── player.py               # Player state management
-├── theme_manager.py        # UI styling and consistency
-├── tile.py                 # Tile objects and behaviors
-├── utils.py                # Helper utilities and algorithms
-└── main.py                 # Application entry point
-```
-## Test Directory
-```
+├── assets/
+├── screens/
+│   ├── menu.py
+│   └── game_screen.py
+├── board.py
+├── deck.py
+├── game.py
+├── message_system.py
+├── player.py
+├── theme_manager.py
+├── tile.py
+└── utils.py
+    </pre>
+  </div>
+
+  <!-- Test Suite -->
+  <div style="flex: 1; min-width: 320px;">
+    <h3>Test Suite</h3>
+    <pre>
 tests/
-├── __init__.py
-├── conftest.py                # Shared fixtures and configuration
-├── unit/                      # Unit tests for individual components
-│   ├── __init__.py
+├── conftest.py
+├── unit/
 │   ├── test_board.py
 │   ├── test_deck.py
 │   ├── test_game.py
@@ -212,54 +340,90 @@ tests/
 │   ├── test_theme_manager.py
 │   ├── test_tile.py
 │   └── test_utils.py
-├── integration/               # Tests for component interactions
-│   ├── __init__.py
+├── integration/
 │   ├── test_game_board.py
 │   └── test_player_actions.py
-└── functional/                # End-to-end gameplay tests
-    ├── __init__.py
+└── functional/
     └── test_gameplay.py
+    </pre>
+  </div>
+</div>
+
+## Installation
+
+### Using Conda (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/ConnorBaldes/rummikub.git
+cd rummikub
+
+# Create the conda environment
+conda env create -f environment.yaml
+
+# Activate the environment
+conda activate rummikub
 ```
 
-## System Architecture
-The Rummikub game is built with a structured, object-oriented architecture using Python and Pygame. The system separates game logic from rendering concerns and employs several design patterns to maintain clean, maintainable code.
-```
-    ┌─────────────────────────────────────────────┐
-    │                   Game                      │
-    │  Controls game flow and coordinates modules │
-    └─────────────────────┬───────────────────────┘
-                          │
-    ┌─────────────────────┴─────────────────────────┐
-    │                                               │
-┌───▼───────────────┐  ┌───────────────────┐  ┌─────▼───────────┐
-│  Core Game Logic  │  │    UI Rendering   │  │ Game Screens    │
-│ (Board/Deck/Tile) │  │ (Theme/Messages)  │  │ (Menu/GamePlay) │
-└───────────────────┘  └───────────────────┘  └─────────────────┘
+### Using Pip
+```bash
+# Clone the repository
+git clone https://github.com/ConnorBaldes/rummikub.git
+cd rummikub
+
+# Create a virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-## Key Components
-The implementation leverages several design patterns:
+## Testing
+This project uses pytest for unit testing, integration testing, and functional testing. The test suite ensures the game components work correctly individually and together.
 
-1. **Model-View-Controller (MVC)**:
-    - **Model**: Game state in Board, Player, and Tile classes
-    - **View**: Rendering logic in GameScreen and ThemeManager
-    - **Controller**: Game flow management in Game class
-2. **Singleton Pattern**:
-    - ThemeManager implements a singleton approach for consistent styling
-3. **Factory Pattern**:
-    - Deck implements factory-like behavior for creating tiles
-4. **State Pattern**:
-    - Screen transitions implement state-based navigation
-5. **Observer Pattern**:
-    - Message notification system observes game events
+### Test Structure
+Tests are organized into the following directories:
+- tests/unit/: Contains unit tests for individual components
+- tests/integration/: Contains tests that verify multiple components work together
+- tests/functional/: Contains functional tests for higher-level game behavior
 
-## Implementation Highlights
-1. **Optimized algorithms**: Uses NumPy for efficient matrix operations in the Graph class
-2. **State preservation**: Maintains game state between turns with position tracking
-3. **Error resilience**: Handles invalid moves with clear feedback and recovery options
-4. **Extensible design**: Modular architecture allows for feature expansion
-5. **Duck typing**: Uses Pythonic programming patterns for flexible object handling
-6. **Type hints**: Employs Python type annotations for better code clarity and tooling support
+### Running Tests
+
+You can run the entire test suite with:
+```bash
+python run_tests.py
+```
+
+Or use pytest directly:
+```bash
+pytest
+```
+To run a specific test file:
+```bash
+pytest tests/unit/test_tile.py
+```
+
+To run a specific test:
+```bash
+pytest tests/unit/test_tile.py::TestTile::test_resize_image
+```
+
+<br>
+
+### Test Coverage
+I use coverage.py to measure test coverage. Run the tests with coverage:
+
+```bash
+pytest --cov=rummikub
+```
+
+Generate an HTML coverage report:
+```bash
+pytest --cov=rummikub --cov-report=html
+```
+
+Then open htmlcov/index.html in your browser to view the report.
 
 <br>
 
@@ -495,80 +659,3 @@ The main gameplay screen with the board, player rack, and game controls.
 - End Turn button and other controls
 - Visual feedback for valid and invalid moves
 
-<br>
-
-## Installation
-
-### Using Conda (Recommended)
-
-```bash
-# Clone the repository
-git clone https://github.com/ConnorBaldes/rummikub.git
-cd rummikub
-
-# Create the conda environment
-conda env create -f environment.yaml
-
-# Activate the environment
-conda activate rummikub
-```
-
-### Using Pip
-```bash
-# Clone the repository
-git clone https://github.com/ConnorBaldes/rummikub.git
-cd rummikub
-
-# Create a virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-## Testing
-This project uses pytest for unit testing, integration testing, and functional testing. The test suite ensures the game components work correctly individually and together.
-
-### Test Structure
-Tests are organized into the following directories:
-- tests/unit/: Contains unit tests for individual components
-- tests/integration/: Contains tests that verify multiple components work together
-- tests/functional/: Contains functional tests for higher-level game behavior
-
-### Running Tests
-
-You can run the entire test suite with:
-```bash
-python run_tests.py
-```
-
-Or use pytest directly:
-```bash
-pytest
-```
-To run a specific test file:
-```bash
-pytest tests/unit/test_tile.py
-```
-
-To run a specific test:
-```bash
-pytest tests/unit/test_tile.py::TestTile::test_resize_image
-```
-
-<br>
-
-### Test Coverage
-I use coverage.py to measure test coverage. Run the tests with coverage:
-
-```bash
-pytest --cov=rummikub
-```
-
-Generate an HTML coverage report:
-```bash
-pytest --cov=rummikub --cov-report=html
-```
-
-Then open htmlcov/index.html in your browser to view the report.
