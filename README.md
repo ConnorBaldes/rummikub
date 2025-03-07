@@ -180,8 +180,6 @@ All manipulations must result in valid sets with no loose tiles left on the tabl
 
 # Technical Architecture & Design
 
-<h2 align="center">Architecture Overview</h2>
-
 <blockquote>
 
 <h3>Core Architecture (MVC Pattern)</h3>
