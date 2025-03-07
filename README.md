@@ -5,14 +5,10 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
 
 ## Game Overview
 
-<table width="100%">
-    <tr>
-        <td valign="top">
-            <p>Rummikub challenges players to strategically place tiles in valid combinations, aiming to be the first to empty their rack. This implementation delivers an authentic digital experience with intuitive drag-and-drop mechanics, automatic rule validation, and a polished interface.</p>
-            <p><strong>Objective:</strong> Be the first player to play all tiles from your rack by forming them into valid sets and runs.</p>
-        </td>
+Rummikub challenges players to strategically place tiles in valid combinations, aiming to be the first to empty their rack. This implementation delivers an authentic digital experience with intuitive drag-and-drop mechanics, automatic rule validation, and a polished interface.
 
-</table>
+**Objective:** Be the first player to play all tiles from your rack by forming them into valid sets and runs.
+
 
 <h3 align="center">Tiles</h3>
 
