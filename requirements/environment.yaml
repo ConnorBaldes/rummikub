@@ -1,0 +1,15 @@
+name: rummikub
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.13
+  - pip=25.0
+  - numpy=2.2.*
+  - pytest=7.4.*
+  - pytest-cov
+  - pytest-mock
+  - pip:
+    - pygame==2.6.*
+    - pygame_menu==4.5.*
+    - Pillow==11.*

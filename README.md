@@ -497,6 +497,36 @@ The main gameplay screen with the board, player rack, and game controls.
 
 <br>
 
+## Installation
+
+### Using Conda (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/ConnorBaldes/rummikub.git
+cd rummikub
+
+# Create the conda environment
+conda env create -f environment.yaml
+
+# Activate the environment
+conda activate rummikub
+```
+
+### Using Pip
+```bash
+# Clone the repository
+git clone https://github.com/ConnorBaldes/rummikub.git
+cd rummikub
+
+# Create a virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
 ## Testing
 This project uses pytest for unit testing, integration testing, and functional testing. The test suite ensures the game components work correctly individually and together.
 
