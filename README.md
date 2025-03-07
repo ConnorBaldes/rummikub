@@ -50,6 +50,36 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
     </tr>
 </table>
 
+<table align="center" width="100%">
+    <tr>
+        <th width="50%" align="center" >Valid Groups</th>
+        <th width="50%" align="center" >Valid Runs</th>
+    </tr>
+    <tr>
+        <td align="center">
+            <p><pre>Same number in different colors (3-4 tiles)</pre></p>
+            <img src="./rummikub/assets/tiles_2/tile_7_orange.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_7_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="40">
+            <br><br>
+            <img src="./rummikub/assets/tiles_2/tile_4_orange.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_4_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_4_black.png" width="40">
+        </td>
+        <td align="center">
+            <p><pre>Consecutive numbers in same color (3+ tiles)</pre></p>
+            <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_8_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="40">
+            <br><br>
+            <img src="./rummikub/assets/tiles_2/tile_3_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_6_blue.png" width="40">
+        </td>
+    </tr>
+</table>
 
 <table width="100%">
     <tr>
@@ -78,37 +108,6 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
         <td width="33%" valign="top" align="center">
             <p><strong>Jokers:</strong> Substitute for any tile. Can be retrieved by replacing with the actual tile it represents.</p>
             <p><strong>Winning:</strong> First to play all tiles wins. Score equals sum of opponents' remaining tile values.</p>
-        </td>
-    </tr>
-</table>
-
-<table align="center" width="100%">
-    <tr>
-        <th width="50%" align="center" >Valid Groups</th>
-        <th width="50%" align="center" >Valid Runs</th>
-    </tr>
-    <tr>
-        <td align="center">
-            <p><pre>Same number in different colors (3-4 tiles)</pre></p>
-            <img src="./rummikub/assets/tiles_2/tile_7_orange.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_7_blue.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="40">
-            <br><br>
-            <img src="./rummikub/assets/tiles_2/tile_4_orange.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_4_red.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_4_black.png" width="40">
-        </td>
-        <td align="center">
-            <p><pre>Consecutive numbers in same color (3+ tiles)</pre></p>
-            <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_8_red.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="40">
-            <br><br>
-            <img src="./rummikub/assets/tiles_2/tile_3_blue.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_6_blue.png" width="40">
         </td>
     </tr>
 </table>
