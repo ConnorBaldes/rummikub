@@ -16,39 +16,40 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
 
 <h3 align="center">Tiles</h3>
 
-<table width="100%">
+<table width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
     <tr>
-        <td width="25%" align="center">
-            <strong>Red Tiles (1-13)</strong><br>
+        <td width="22%" align="center" style="padding: 0;">
+            <strong>Red (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_red.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_5_red.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_2_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_3_red.png" width="40">
         </td>
-        <td width="25%" align="center">
-            <strong>Blue Tiles (1-13)</strong><br>
+        <td width="22%" align="center" style="padding: 0;">
+            <strong>Blue (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_blue.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_2_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_3_blue.png" width="40">
         </td>
-        <td width="25%" align="center">
-            <strong>Black Tiles (1-13)</strong><br>
+        <td width="22%" align="center" style="padding: 0;">
+            <strong>Black (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_black.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_5_black.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_9_black.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_2_black.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_3_black.png" width="40">
         </td>
-        <td width="25%" align="center">
-            <strong>Orange Tiles (1-13)</strong><br>
+        <td width="22%" align="center" style="padding: 0;">
+            <strong>Orange (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_orange.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_5_orange.png" width="40">
-            <img src="./rummikub/assets/tiles_2/tile_9_orange.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_2_orange.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_3_orange.png" width="40">
         </td>
-        <td width="30%" align="center">
-            <strong>Joker Tiles</strong><br>
+        <td width="22%" align="center" style="padding: 0;">
+            <strong>Jokers </strong><br>
             <img src="./rummikub/assets/tiles_2/tile_joker_1.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_joker_2.png" width="40">
         </td>
     </tr>
 </table>
+
 
 <table width="100%">
     <tr>
