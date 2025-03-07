@@ -16,7 +16,7 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
 
 <h3 align="center">Tiles</h3>
 
-<table width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+<table width="120%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
     <tr>
         <td width="20%" align="center" style="padding: 0;">
             <strong>Red (1-13)</strong><br>
