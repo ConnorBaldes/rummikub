@@ -168,19 +168,19 @@ The Rummikub game is built with a structured, object-oriented architecture using
     <td>
       <pre>
 rummikub/
-├── rummikub/                               # Core Game Module
-├── tests/ # Test Suite
-├── main.py
-├── README.md
-├── LICENSE
-├── .gitignore
-├── pytest.ini
-├── run_tests.py
-├── readme_images/
-├── docs/
+├── rummikub/                   # Core Game Module
+├── tests/                      # Test Suite
+├── main.py                     # Project entry point
+├── README.md                   # Project documentation
+├── LICENSE                     # Project license
+├── .gitignore                  # Git ignore configurations
+├── pytest.ini                  # PyTest configuration
+├── run_tests.py                # Test runner script
+├── readme_images/              # Images for documentation
+├── docs/                       # Documentation files
 │   ├── rummikub_rules.pdf
-│   └── rummikub_project_description.odt
-└── requirements/
+│   └── project_description.odt
+└── requirements/               # Dependency specifications
     ├── environment.yaml
     └── requirements.txt
       </pre>
@@ -188,25 +188,25 @@ rummikub/
     <td>
       <pre>
 rummikub/
-├── assets/
-├── screens/
-│   ├── menu.py
-│   └── game_screen.py
-├── board.py
-├── deck.py
-├── game.py
-├── message_system.py
-├── player.py
-├── theme_manager.py
-├── tile.py
-└── utils.py
+├── assets/             # Game assets (images, sounds)
+├── screens/            # Screen management modules              
+│   ├── menu.py         # Menu systems and setup
+│   └── game_screen.py  # Main gameplay screen
+├── board.py            # Board state and validation
+├── deck.py             # Tile creation and management
+├── game.py             # Main game controller
+├── message_system.py   # User feedback notifications
+├── player.py           # Player state management
+├── theme_manager.py    # UI styling and consistency
+├── tile.py             # Tile objects and behaviors
+└── utils.py            # Helper utilities
       </pre>
     </td>
     <td>
       <pre>
 tests/
-├── conftest.py
-├── unit/
+├── conftest.py                 # Shared test fixtures
+├── unit/                       # Component unit tests
 │   ├── test_board.py
 │   ├── test_deck.py
 │   ├── test_game.py
@@ -215,10 +215,10 @@ tests/
 │   ├── test_theme_manager.py
 │   ├── test_tile.py
 │   └── test_utils.py
-├── integration/
+├── integration/                # Component interactions
 │   ├── test_game_board.py
 │   └── test_player_actions.py
-└── functional/
+└── functional/                 # End-to-end tests
     └── test_gameplay.py
       </pre>
     </td>
