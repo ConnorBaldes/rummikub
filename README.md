@@ -24,19 +24,19 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
             <img src="./rummikub/assets/tiles_2/tile_2_red.png" width="33">
             <img src="./rummikub/assets/tiles_2/tile_3_red.png" width="33">
         </td>
-        <td width="21%" align="center" style="padding: 0;">
+        <td width="22%" align="center" style="padding: 0;">
             <strong>Blue (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_blue.png" width="33">
             <img src="./rummikub/assets/tiles_2/tile_2_blue.png" width="33">
             <img src="./rummikub/assets/tiles_2/tile_3_blue.png" width="33">
         </td>
-        <td width="21%" align="center" style="padding: 0;">
+        <td width="22%" align="center" style="padding: 0;">
             <strong>Black (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_black.png" width="33">
             <img src="./rummikub/assets/tiles_2/tile_2_black.png" width="33">
             <img src="./rummikub/assets/tiles_2/tile_3_black.png" width="33">
         </td>
-        <td width="21%" align="center" style="padding: 0;">
+        <td width="22%" align="center" style="padding: 0;">
             <strong>Orange (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_orange.png" width="33">
             <img src="./rummikub/assets/tiles_2/tile_2_orange.png" width="33">
