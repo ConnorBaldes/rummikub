@@ -261,6 +261,8 @@ The implementation leverages several design patterns:
 5. **Duck typing**: Uses Pythonic programming patterns for flexible object handling
 6. **Type hints**: Employs Python type annotations for better code clarity and tooling support
 
+<br>
+
 ## Graph-Based Set Detection
 The most technically complex aspect is the implementation of a graph-based algorithm for detecting valid Rummikub sets:
 ```python
@@ -423,6 +425,8 @@ def load_sounds(self):
 - **Graceful degradation**: Falls back silently if sound system unavailable
 - **Contextual feedback**: Different sounds for different game states
 
+<br>
+
 ## Game Screens
 
 ### Main Menu
@@ -442,6 +446,8 @@ The main menu provides options for starting a new game, configuring settings, an
 - Settings for customizing game parameters
 - Attractive background and Rummikub branding
 
+<br>
+
 ### Player Setup
 
 The player setup screen allows configuring player names and the number of players for the game.
@@ -455,6 +461,8 @@ The player setup screen allows configuring player names and the number of player
 - Player count selection
 - Start Game button to begin play
 - Visual feedback for valid selections
+
+<br>
 
 ### Turn Screen
 
@@ -470,6 +478,8 @@ The turn screen displays information about the current player's turn along with 
 - Start Turn button to begin the player's turn
 - Random game tip for strategy guidance
 
+<br>
+
 ### Game Board
 
 The main gameplay screen with the board, player rack, and game controls.
@@ -484,3 +494,51 @@ The main gameplay screen with the board, player rack, and game controls.
 - Current player's rack
 - End Turn button and other controls
 - Visual feedback for valid and invalid moves
+
+<br>
+
+## Testing the Rummikub Game
+This project uses pytest for unit testing, integration testing, and functional testing. The test suite ensures the game components work correctly individually and together.
+
+### Test Structure
+Tests are organized into the following directories:
+- tests/unit/: Contains unit tests for individual components
+- tests/integration/: Contains tests that verify multiple components work together
+- tests/functional/: Contains functional tests for higher-level game behavior
+
+### Running Tests
+
+You can run the entire test suite with:
+```bash
+python run_tests.py
+```
+
+Or use pytest directly:
+```bash
+pytest
+```
+To run a specific test file:
+```bash
+pytest tests/unit/test_tile.py
+```
+
+To run a specific test:
+```bash
+pytest tests/unit/test_tile.py::TestTile::test_resize_image
+```
+
+<br>
+
+### Test Coverage
+I use coverage.py to measure test coverage. Run the tests with coverage:
+
+```bash
+pytest --cov=rummikub
+```
+
+Generate an HTML coverage report:
+```bash
+pytest --cov=rummikub --cov-report=html
+```
+
+Then open htmlcov/index.html in your browser to view the report.
