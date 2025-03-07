@@ -223,12 +223,12 @@ Then open htmlcov/index.html in your browser to view the report.
     </tr>
 </table>
 
-## System Architecture
+### System Architecture
 The Rummikub game is built with a structured, object-oriented architecture using Python and Pygame. The system separates game logic from rendering concerns and employs several design patterns to maintain clean, maintainable code.
 ![System architecture image](./readme_images/system_architecture.png)
 
 
-<h2 align="left">Project Structure</h2>
+### Directory Structure
 
 <table width="100%">
   <tr>
@@ -297,7 +297,7 @@ tests/
   </tr>
 </table>
 
-
+<br>
 
 ## Graph-Based Set Detection
 The most technically complex aspect is the implementation of a graph-based algorithm for detecting valid Rummikub sets:
