@@ -142,6 +142,8 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+<br>
+
 ## Running the Game
 ```bash
 python main.py
