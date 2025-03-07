@@ -5,245 +5,153 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
 
 ## Game Overview
 
-Rummikub is a tile-based game that combines elements of rummy and mahjong, where players strategically place tiles to form valid sets and aim to be the first to empty their rack. This implementation provides a complete digital experience with intuitive drag-and-drop mechanics, automatic rule validation, and a polished user interface.
+<table width="100%">
+    <tr>
+        <td valign="top">
+            <p>Rummikub challenges players to strategically place tiles in valid combinations, aiming to be the first to empty their rack. This implementation delivers an authentic digital experience with intuitive drag-and-drop mechanics, automatic rule validation, and a polished interface.</p>
+            <p><strong>Objective:</strong> Be the first player to play all tiles from your rack by forming them into valid sets and runs.</p>
+        </td>
 
-### Key Features
+</table>
 
-- **Complete Rules Implementation**: Authentic Rummikub experience with all official rules
-- **Intuitive Tile Management**: Drag-and-drop interface with intelligent tile snapping
-- **Advanced Set Validation**: Automatic detection and validation of tile combinations
-- **Smart Joker Handling**: Context-aware joker tiles that adapt to their surroundings
-- **Game State Management**: Full tracking of gameplay state with move validation
-- **Multi-player Support**: Play with 2-4 players (or up to 6 with XP mode)
-- **Polished UI**: Clean, responsive interface with visual feedback
+<h3 align="center">Tiles</h3>
 
-### Objective
+<table width="100%">
+    <tr>
+        <td width="20%" align="center">
+            <strong>Red Tiles (1-13)</strong><br>
+            <img src="./rummikub/assets/tiles_2/tile_1_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_5_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_13_red.png" width="40">
+        </td>
+        <td width="20%" align="center">
+            <strong>Blue Tiles (1-13)</strong><br>
+            <img src="./rummikub/assets/tiles_2/tile_1_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_13_blue.png" width="40">
+        </td>
+        <td width="20%" align="center">
+            <strong>Black Tiles (1-13)</strong><br>
+            <img src="./rummikub/assets/tiles_2/tile_1_black.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_5_black.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_9_black.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_13_black.png" width="40">
+        </td>
+        <td width="20%" align="center">
+            <strong>Orange Tiles (1-13)</strong><br>
+            <img src="./rummikub/assets/tiles_2/tile_1_orange.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_5_orange.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_9_orange.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_13_orange.png" width="40">
+        </td>
+        <td width="20%" align="center">
+            <strong>Joker Tiles</strong><br>
+            <img src="./rummikub/assets/tiles_2/tile_joker_1.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_joker_2.png" width="40">
+        </td>
+    </tr>
+</table>
 
-Be the first player to play all the tiles from your rack by forming them into valid sets.
+<table width="100%">
+    <tr>
+        <td width="33%" valign="top" align="center">
+            <h3>Initial Meld</h3>
+            <p>Players must start with a meld totaling at least <strong>30 points</strong> from their rack.</p>
+            <p>Example: 9+10+11=30 (Blue run)<br>
+            <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="30">
+            <img src="./rummikub/assets/tiles_2/tile_10_blue.png" width="30">
+            <img src="./rummikub/assets/tiles_2/tile_11_blue.png" width="30">
+            </p>
+        </td>
+        <td width="33%" valign="top" align="center">
+            <h3 align="center">Manipulation</h3>
+            <p>After initial meld, players can:</p>
+            <p>
+                • Add tiles from rack to existing sets<br>
+                • Rearrange table tiles to form new sets<br>
+                • Split runs into smaller valid runs<br>
+                • Combine sets into new arrangements
+            </p>
+        </td>
+        <td width="33%" valign="top" align="center">
+            <h3 align="center">Jokers & Winning</h3>
+            <p><strong>Jokers:</strong> Substitute for any tile. Can be retrieved by replacing with the actual tile it represents.</p>
+            <p><strong>Winning:</strong> First to play all tiles wins. Score equals sum of opponents' remaining tile values.</p>
+        </td>
+    </tr>
+</table>
 
-### Tile Components
+<table width="100%">
+    <tr>
+        <th width="50%" align="center" >Valid Groups</th>
+        <th width="50%" align="center" >Valid Runs</th>
+    </tr>
+    <tr>
+        <td align="left">
+            <p>Same number in different colors (3-4 tiles)</p>
+            <img src="./rummikub/assets/tiles_2/tile_7_orange.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_7_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="40">
+            <br><br>
+            <img src="./rummikub/assets/tiles_2/tile_4_orange.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_4_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_4_black.png" width="40">
+        </td>
+        <td align="left">
+            <p>Consecutive numbers in same color (3+ tiles)</p>
+            <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_8_red.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="40">
+            <br><br>
+            <img src="./rummikub/assets/tiles_2/tile_3_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="40">
+            <img src="./rummikub/assets/tiles_2/tile_6_blue.png" width="40">
+        </td>
+    </tr>
+</table>
 
-The standard Rummikub set consists of 106 tiles, comprising 104 number tiles and 2 joker tiles. The number tiles range from 1 to 13 in four distinct colors (red, blue, black, and yellow), with each number-color combination appearing twice in the set. The joker tiles serve as wild cards that can represent any tile in the game, providing strategic flexibility during gameplay.
-
-<div style="display: flex; justify-content: center;">
-  <img src="./rummikub/assets/tiles_2/tile_1_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_2_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_3_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_4_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_5_red.png" width="5%" style="margin: 0 5px;" lt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_6_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_8_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_10_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_11_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_12_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_13_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 20px"></div>
-<div style="display: flex; justify-content: center;">
-  <img src="./rummikub/assets/tiles_2/tile_1_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_2_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_3_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="5%" style="margin: 0 5px;" lt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_6_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_7_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_8_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_10_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_11_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_12_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_13_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 20px"></div>
-<div style="display: flex; justify-content: center;">
-  <img src="./rummikub/assets/tiles_2/tile_1_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_2_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_3_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_4_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_5_black.png" width="5%" style="margin: 0 5px;" lt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_6_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_7_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_8_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_9_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_10_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_11_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_12_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_13_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 20px"></div>
-<div style="display: flex; justify-content: center;">
-  <img src="./rummikub/assets/tiles_2/tile_1_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_2_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_3_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_4_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_5_orange.png" width="5%" style="margin: 0 5px;" lt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_6_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_7_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_8_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_9_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_10_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_11_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_12_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_13_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 20px"></div>
-<div style="display: flex; justify-content: center;">
-    <img src="./rummikub/assets/tiles_2/tile_joker_1.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-    <img src="./rummikub/assets/tiles_2/tile_joker_2.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 50px"></div>
-
-### Valid Sets
-
-There are two types of valid sets in Rummikub:
-
-#### Groups
-A group consists of **three or four tiles of the same number in different colors**.
-
-<div style="display: flex; justify-content: left;">
-  <img src="./rummikub/assets/tiles_2/tile_7_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_7_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 20px"></div>
-<div style="display: flex; justify-content: left;">
-  <img src="./rummikub/assets/tiles_2/tile_4_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_4_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_4_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_4_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 20px"></div>
-
-#### Runs
-A run consists of **three or more consecutive numbers all in the same color**.
-<div style="display: flex; justify-content: left;">
-  <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_8_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 20px"></div>
-The number 1 is always the lowest number and cannot follow 13 (no wrapping around).
-
-### Initial Meld
-
-- Each player must make an initial meld of tiles totaling at least 30 points
-- These tiles must come from the player's rack and cannot use tiles already on the table
-- A joker used in the initial meld scores the value of the tile it represents
-<div style="display: flex; justify-content: left;">
-  <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_10_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_11_blue.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 20px"></div>
-<div style="display: flex; justify-content: left;">
-  <img src="./rummikub/assets/tiles_2/tile_10_red.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_10_black.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-  <img src="./rummikub/assets/tiles_2/tile_10_orange.png" width="5%" style="margin: 0 5px;" alt="Image 1">
-</div>
-<div style="height: 20px"></div>
-
-### Manipulation
-
-After a player's initial meld, they can manipulate tiles on the table by:
-
-1. **Adding tiles** from their rack to existing sets
-2. **Rearranging tiles** already on the table to form new valid sets
-3. **Splitting runs** into smaller valid runs
-4. **Combining sets** to form new valid arrangements
-
-All manipulations must result in valid sets with no loose tiles left on the table.
-
-### Jokers
-
-- Jokers can substitute for any tile in a set
-- A joker's value and color are determined by the set it's placed in
-- Players can retrieve a joker by replacing it with the actual tile it represents (from their rack or the table)
-- Retrieved jokers must be played in the same turn to form a new set
-- Players must use at least one tile from their rack when retrieving a joker
-- Jokers cannot be retrieved before a player has made their initial meld
-
-### Winning
-
-- The first player to play all tiles from their rack and call "Rummikub!" wins the game
-- If there are no more tiles in the pool and no player can make a move, the player with the lowest point value on their rack wins
-
-### Scoring
-
-- After a player wins, other players add up the value of remaining tiles on their racks as negative points
-- The winner receives positive points equal to the total of all other players' negative points
-- A joker on a rack carries a penalty of 30 points
-- The player with the most game wins or highest score after the agreed number of rounds is the overall winner
-
+<br>
 
 
 # Technical Architecture & Design
 
 <blockquote>
-
-<h3>Core Architecture (MVC Pattern)</h3>
-
-<ul>
-
-<li><strong>Model:</strong> Game state management (Board, Player, Tile classes)</li>
-
-<li><strong>View:</strong> Rendering and display logic (GameScreen, ThemeManager)</li>
-
-<li><strong>Controller:</strong> Game flow and logic coordination (Game class)</li>
-
-</ul>
-
+    <h3>Core Architecture (MVC Pattern)</h3>
+    <ul>
+        <li><strong>Model:</strong> Game state management (Board, Player, Tile classes)</li>
+        <li><strong>View:</strong> Rendering and display logic (GameScreen, ThemeManager)</li>
+        <li><strong>Controller:</strong> Game flow and logic coordination (Game class)</li>
+    </ul>
 </blockquote>
 
 <table width="100%">
-
-<tr>
-
-<th align="center" width="50%"><h3>Implementation Highlights</h3></th>
-
-<th align="center" width="50%"><h3>Design Patterns</h3></th>
-
-</tr>
-
-<tr valign="top">
-
-<td>
-
-<ul>
-
-<li><strong>Optimized Algorithms:</strong> NumPy-powered matrix operations for efficiency</li>
-
-<li><strong>State Preservation:</strong> Robust game state tracking between turns</li>
-
-<li><strong>Error Handling:</strong> Graceful recovery from invalid moves with clear feedback</li>
-
-<li><strong>Type Annotations:</strong> Comprehensive Python type hints for improved code clarity</li>
-
-<li><strong>Duck Typing:</strong> Flexible object interfaces following Pythonic principles</li>
-
-</ul>
-
-</td>
-
-<td>
-
-<ul>
-
-<li><strong>Singleton Pattern:</strong> ThemeManager ensures consistent styling</li>
-
-<li><strong>Factory Pattern:</strong> Deck class produces tiles with standardized properties</li>
-
-<li><strong>State Pattern:</strong> Screen manager handles transitions between game states</li>
-
-<li><strong>Observer Pattern:</strong> Event system for notifications and UI updates</li>
-
-</ul>
-
-</td>
-
-</tr>
-
+    <tr>
+        <th align="center" width="50%"><h3>Implementation Highlights</h3></th>
+        <th align="center" width="50%"><h3>Design Patterns</h3></th>
+    </tr>
+    <tr valign="top">
+        <td>
+            <ul>
+                <li><strong>Optimized Algorithms:</strong> NumPy-powered matrix operations for efficiency</li>
+                <li><strong>State Preservation:</strong> Robust game state tracking between turns</li>
+                <li><strong>Error Handling:</strong> Graceful recovery from invalid moves with clear feedback</li>
+                <li><strong>Type Annotations:</strong> Comprehensive Python type hints for improved code clarity</li>
+                <li><strong>Duck Typing:</strong> Flexible object interfaces following Pythonic principles</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li><strong>Singleton Pattern:</strong> ThemeManager ensures consistent styling</li>
+                <li><strong>Factory Pattern:</strong> Deck class produces tiles with standardized properties</li>
+                <li><strong>State Pattern:</strong> Screen manager handles transitions between game states</li>
+                <li><strong>Observer Pattern:</strong> Event system for notifications and UI updates</li>
+            </ul>
+        </td>
+    </tr>
 </table>
 
 ## System Architecture
