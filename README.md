@@ -82,12 +82,12 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
 
 <table align="center" width="100%">
     <tr>
-        <th width="45%" align="center" >Valid Groups</th>
-        <th width="55%" align="center" >Valid Runs</th>
+        <th width="50%" align="center" >Valid Groups</th>
+        <th width="50%" align="center" >Valid Runs</th>
     </tr>
     <tr>
         <td align="center">
-            <p>Same number in different colors (3-4 tiles)</p>
+            <p><pre>Same number in different colors (3-4 tiles)</pre></p>
             <img src="./rummikub/assets/tiles_2/tile_7_orange.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_7_blue.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="40">
@@ -98,7 +98,7 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
             <img src="./rummikub/assets/tiles_2/tile_4_black.png" width="40">
         </td>
         <td align="center">
-            <p>Consecutive numbers in same color (3+ tiles)</p>
+            <p><pre>Consecutive numbers in same color (3+ tiles)</pre></p>
             <img src="./rummikub/assets/tiles_2/tile_7_red.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_8_red.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="40">
