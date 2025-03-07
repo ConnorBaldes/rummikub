@@ -16,39 +16,37 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
 
 <h3 align="center">Tiles</h3>
 
-<table width="100%">
-    <tr>
-        <td width="20%" align="center">
-            <strong>Red (1-13)</strong><br>
-            <img src="./rummikub/assets/tiles_2/tile_1_red.png" width="40" alt="Red 1">
-            <img src="./rummikub/assets/tiles_2/tile_5_red.png" width="40" alt="Red 5">
-            <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="40" alt="Red 9">
-        </td>
-        <td width="20%" align="center">
-            <strong>Blue (1-13)</strong><br>
-            <img src="./rummikub/assets/tiles_2/tile_1_blue.png" width="40" alt="Blue 1">
-            <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="40" alt="Blue 5">
-            <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="40" alt="Blue 9">
-        </td>
-        <td width="20%" align="center">
-            <strong>Black (1-13)</strong><br>
-            <img src="./rummikub/assets/tiles_2/tile_1_black.png" width="40" alt="Black 1">
-            <img src="./rummikub/assets/tiles_2/tile_5_black.png" width="40" alt="Black 5">
-            <img src="./rummikub/assets/tiles_2/tile_9_black.png" width="40" alt="Black 9">
-        </td>
-        <td width="20%" align="center">
-            <strong>Orange (1-13)</strong><br>
-            <img src="./rummikub/assets/tiles_2/tile_1_orange.png" width="40" alt="Orange 1">
-            <img src="./rummikub/assets/tiles_2/tile_5_orange.png" width="40" alt="Orange 5">
-            <img src="./rummikub/assets/tiles_2/tile_9_orange.png" width="40" alt="Orange 9">
-        </td>
-        <td width="20%" align="center">
-            <strong>Jokers</strong><br>
-            <img src="./rummikub/assets/tiles_2/tile_joker_1.png" width="40" alt="Joker 1">
-            <img src="./rummikub/assets/tiles_2/tile_joker_2.png" width="40" alt="Joker 2">
-        </td>
-    </tr>
-</table>
+<div style="display: flex; justify-content: space-between; width: 100%; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 19%; text-align: center;">
+        <strong>Red (1-13)</strong><br>
+        <img src="./rummikub/assets/tiles_2/tile_1_red.png" width="40" alt="Red 1">
+        <img src="./rummikub/assets/tiles_2/tile_5_red.png" width="40" alt="Red 5">
+        <img src="./rummikub/assets/tiles_2/tile_9_red.png" width="40" alt="Red 9">
+    </div>
+    <div style="flex: 1; min-width: 19%; text-align: center;">
+        <strong>Blue (1-13)</strong><br>
+        <img src="./rummikub/assets/tiles_2/tile_1_blue.png" width="40" alt="Blue 1">
+        <img src="./rummikub/assets/tiles_2/tile_5_blue.png" width="40" alt="Blue 5">
+        <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="40" alt="Blue 9">
+    </div>
+    <div style="flex: 1; min-width: 19%; text-align: center;">
+        <strong>Black (1-13)</strong><br>
+        <img src="./rummikub/assets/tiles_2/tile_1_black.png" width="40" alt="Black 1">
+        <img src="./rummikub/assets/tiles_2/tile_5_black.png" width="40" alt="Black 5">
+        <img src="./rummikub/assets/tiles_2/tile_9_black.png" width="40" alt="Black 9">
+    </div>
+    <div style="flex: 1; min-width: 19%; text-align: center;">
+        <strong>Orange (1-13)</strong><br>
+        <img src="./rummikub/assets/tiles_2/tile_1_orange.png" width="40" alt="Orange 1">
+        <img src="./rummikub/assets/tiles_2/tile_5_orange.png" width="40" alt="Orange 5">
+        <img src="./rummikub/assets/tiles_2/tile_9_orange.png" width="40" alt="Orange 9">
+    </div>
+    <div style="flex: 1; min-width: 19%; text-align: center;">
+        <strong>Jokers</strong><br>
+        <img src="./rummikub/assets/tiles_2/tile_joker_1.png" width="40" alt="Joker 1">
+        <img src="./rummikub/assets/tiles_2/tile_joker_2.png" width="40" alt="Joker 2">
+    </div>
+</div>
 
 
 
