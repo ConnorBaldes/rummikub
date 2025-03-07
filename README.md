@@ -42,7 +42,7 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
             <img src="./rummikub/assets/tiles_2/tile_5_orange.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_9_orange.png" width="40">
         </td>
-        <td width="20%" align="center">
+        <td width="30%" align="center">
             <strong>Joker Tiles</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_joker_1.png" width="40">
             <img src="./rummikub/assets/tiles_2/tile_joker_2.png" width="40">
