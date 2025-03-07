@@ -167,7 +167,9 @@ The Rummikub game is built with a structured, object-oriented architecture using
   <tr valign="top">
     <td>
       <pre>
-rummikub-project/
+rummikub/
+├── rummikub/ # Core Game Module
+├── tests/ # Test Suite
 ├── main.py
 ├── README.md
 ├── LICENSE
