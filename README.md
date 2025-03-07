@@ -90,7 +90,7 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
     <tr>
         <td width="30%" valign="top" align="left">
             <p>Players must start with a meld totaling at least <strong>30 points</strong> from their rack.</p>
-            <p>Example: 9+10+11=30 (Blue run)<br>
+            <p>Example: <br>9+10+11=30 (Blue run)<br>
             <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="30">
             <img src="./rummikub/assets/tiles_2/tile_10_blue.png" width="30">
             <img src="./rummikub/assets/tiles_2/tile_11_blue.png" width="30">
