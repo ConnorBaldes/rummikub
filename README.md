@@ -17,7 +17,7 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
 <h3 align="center">Tiles</h3>
 
 <table width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
-    <tr  width="100%">
+    <tr>
         <td width="22%" align="center" style="padding: 0;">
             <strong>Red (1-13)</strong><br>
             <img src="./rummikub/assets/tiles_2/tile_1_red.png" width="33">
@@ -42,7 +42,7 @@ A comprehensive implementation of the classic Rummikub tile game built with Pyth
             <img src="./rummikub/assets/tiles_2/tile_2_orange.png" width="33">
             <img src="./rummikub/assets/tiles_2/tile_3_orange.png" width="33">
         </td>
-        <td width="16%" align="center" style="padding: 0;">
+        <td width="22%" align="center" style="padding: 0;">
             <strong>Jokers </strong><br>
             <img src="./rummikub/assets/tiles_2/tile_joker_1.png" width="33">
             <img src="./rummikub/assets/tiles_2/tile_joker_2.png" width="33">
