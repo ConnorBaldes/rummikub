@@ -257,6 +257,12 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+## Running the Game
+```bash
+python main.py
+```
+The game will initialize and display the main menu where you can start a new game, adjust settings, or view instructions.
+
 ## Testing
 This project uses pytest for unit testing, integration testing, and functional testing. The test suite ensures the game components work correctly individually and together.
 
