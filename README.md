@@ -88,7 +88,7 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
         <th width="33%" align="center" >Jokers & Winning</th>
     </tr>
     <tr>
-        <td width="33%" valign="top" align="center">
+        <td width="33%" valign="top" align="left">
             <p>Players must start with a meld totaling at least <strong>30 points</strong> from their rack.</p>
             <p>Example: 9+10+11=30 (Blue run)<br>
             <img src="./rummikub/assets/tiles_2/tile_9_blue.png" width="30">
@@ -96,7 +96,7 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
             <img src="./rummikub/assets/tiles_2/tile_11_blue.png" width="30">
             </p>
         </td>
-        <td width="33%" valign="top" align="center">
+        <td width="33%" valign="top" align="left">
             <p>After initial meld, players can:</p>
             <p>
                 • Add tiles from rack to existing sets<br>
@@ -105,7 +105,7 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
                 • Combine sets into new arrangements
             </p>
         </td>
-        <td width="33%" valign="top" align="center">
+        <td width="33%" valign="top" align="left">
             <p><strong>Jokers:</strong> Substitute for any tile. Can be retrieved by replacing with the actual tile it represents.</p>
             <p><strong>Winning:</strong> First to play all tiles wins. Score equals sum of opponents' remaining tile values.</p>
         </td>
