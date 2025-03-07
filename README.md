@@ -497,7 +497,7 @@ The main gameplay screen with the board, player rack, and game controls.
 
 <br>
 
-## Testing the Rummikub Game
+## Testing
 This project uses pytest for unit testing, integration testing, and functional testing. The test suite ensures the game components work correctly individually and together.
 
 ### Test Structure
