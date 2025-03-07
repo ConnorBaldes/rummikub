@@ -82,8 +82,8 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
 
 <table align="center" width="100%">
     <tr>
-        <th width="50%" align="center" >Valid Groups</th>
-        <th width="50%" align="center" >Valid Runs</th>
+        <th width="45%" align="center" >Valid Groups</th>
+        <th width="55%" align="center" >Valid Runs</th>
     </tr>
     <tr>
         <td align="center">
