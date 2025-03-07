@@ -14,11 +14,11 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
 
 <table align="center">
     <tr>
-        <th align="center" width="20%">Red (1-13)</th>
-        <th align="center" width="20%">Blue (1-13)</th>
-        <th align="center" width="20%">Black (1-13)</th>
-        <th align="center" width="20%">Orange (1-13)</th>
-        <th align="center" width="20%">Jokers</th>
+        <th align="center" width="20%"><pre>Red</pre> (1-13)</th>
+        <th align="center" width="20%"><pre>Blue</pre> (1-13)</th>
+        <th align="center" width="20%"><pre>Black</pre> (1-13)</th>
+        <th align="center" width="20%"><pre>Orange</pre> (1-13)</th>
+        <th align="center" width="20%"><pre>Jokers</pre></th>
     </tr>
     <tr>
         <td align="center"><img src="./rummikub/assets/tiles_2/tile_1_red.png" width="40" alt="Red 1"></td>
