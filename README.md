@@ -180,37 +180,73 @@ All manipulations must result in valid sets with no loose tiles left on the tabl
 
 # Technical Architecture & Design
 
-<div style="border-left: 4px solid #0366d6; padding-left: 20px; margin-bottom: 20px;">
-  <h3>Core Architecture (MVC Pattern)</h3>
-  <ul>
-    <li><strong>Model:</strong> Game state management (Board, Player, Tile classes)</li>
-    <li><strong>View:</strong> Rendering and display logic (GameScreen, ThemeManager)</li>
-    <li><strong>Controller:</strong> Game flow and logic coordination (Game class)</li>
-  </ul>
-</div>
+<h2 align="center">Architecture Overview</h2>
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
-  <div style="flex: 1; min-width: 300px; border: 1px solid #0366d6; padding: 15px; border-radius: 5px;">
-    <h3>Implementation Highlights</h3>
-    <ul>
-      <li><strong>Optimized Algorithms:</strong> NumPy-powered matrix operations for efficiency</li>
-      <li><strong>State Preservation:</strong> Robust game state tracking between turns</li>
-      <li><strong>Error Handling:</strong> Graceful recovery from invalid moves with clear feedback</li>
-      <li><strong>Type Annotations:</strong> Comprehensive Python type hints for improved code clarity</li>
-      <li><strong>Duck Typing:</strong> Flexible object interfaces following Pythonic principles</li>
-    </ul>
-  </div>
+<blockquote>
 
-  <div style="flex: 1; min-width: 300px; border: 1px solid #0366d6; padding: 15px; border-radius: 5px;">
-    <h3>Design Patterns</h3>
-    <ul>
-      <li><strong>Singleton Pattern:</strong> ThemeManager ensures consistent styling</li>
-      <li><strong>Factory Pattern:</strong> Deck class produces tiles with standardized properties</li>
-      <li><strong>State Pattern:</strong> Screen manager handles transitions between game states</li>
-      <li><strong>Observer Pattern:</strong> Event system for notifications and UI updates</li>
-    </ul>
-  </div>
-</div>
+<h3>Core Architecture (MVC Pattern)</h3>
+
+<ul>
+
+<li><strong>Model:</strong> Game state management (Board, Player, Tile classes)</li>
+
+<li><strong>View:</strong> Rendering and display logic (GameScreen, ThemeManager)</li>
+
+<li><strong>Controller:</strong> Game flow and logic coordination (Game class)</li>
+
+</ul>
+
+</blockquote>
+
+<table width="100%">
+
+<tr>
+
+<th align="center" width="50%"><h3>Implementation Highlights</h3></th>
+
+<th align="center" width="50%"><h3>Design Patterns</h3></th>
+
+</tr>
+
+<tr valign="top">
+
+<td>
+
+<ul>
+
+<li><strong>Optimized Algorithms:</strong> NumPy-powered matrix operations for efficiency</li>
+
+<li><strong>State Preservation:</strong> Robust game state tracking between turns</li>
+
+<li><strong>Error Handling:</strong> Graceful recovery from invalid moves with clear feedback</li>
+
+<li><strong>Type Annotations:</strong> Comprehensive Python type hints for improved code clarity</li>
+
+<li><strong>Duck Typing:</strong> Flexible object interfaces following Pythonic principles</li>
+
+</ul>
+
+</td>
+
+<td>
+
+<ul>
+
+<li><strong>Singleton Pattern:</strong> ThemeManager ensures consistent styling</li>
+
+<li><strong>Factory Pattern:</strong> Deck class produces tiles with standardized properties</li>
+
+<li><strong>State Pattern:</strong> Screen manager handles transitions between game states</li>
+
+<li><strong>Observer Pattern:</strong> Event system for notifications and UI updates</li>
+
+</ul>
+
+</td>
+
+</tr>
+
+</table>
 
 ## System Architecture
 The Rummikub game is built with a structured, object-oriented architecture using Python and Pygame. The system separates game logic from rendering concerns and employs several design patterns to maintain clean, maintainable code.
