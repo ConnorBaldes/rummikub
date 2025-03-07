@@ -296,7 +296,7 @@ pytest tests/unit/test_tile.py::TestTile::test_resize_image
 <br>
 
 ### Test Coverage
-I use coverage.py to measure test coverage. Run the tests with coverage:
+Run the tests with coverage:
 
 ```bash
 pytest --cov=rummikub
