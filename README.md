@@ -148,6 +148,8 @@ python main.py
 ```
 The game will initialize and display the main menu where you can start a new game, adjust settings, or view instructions.
 
+<br>
+
 ## Testing
 This project uses pytest for unit testing, integration testing, and functional testing. The test suite ensures the game components work correctly individually and together.
 
