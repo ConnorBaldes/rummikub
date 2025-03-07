@@ -223,7 +223,7 @@ Then open htmlcov/index.html in your browser to view the report.
     </tr>
 </table>
 
-### System Architecture
+### System Design
 The Rummikub game is built with a structured, object-oriented architecture using Python and Pygame. The system separates game logic from rendering concerns and employs several design patterns to maintain clean, maintainable code.
 ![System architecture image](./readme_images/system_architecture.png)
 
