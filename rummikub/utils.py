@@ -10,8 +10,8 @@ import numpy as np
 import numpy as np
 
 class Graph:
-    """Optimized adjacency matrix representation of the playing board.
-       This version works with an external dictionary of board tiles.
+    """Optimized adjacency matrix representation of the playing board,
+       that works with an external dictionary of board tiles.
     """
     def __init__(self, max_size: int):
         self.size = max_size

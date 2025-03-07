@@ -311,12 +311,75 @@ Then open htmlcov/index.html in your browser to view the report.
 The most technically complex aspect is the implementation of a graph-based algorithm for detecting valid Rummikub sets:
 ```python
 class Graph:
-    """Optimized adjacency matrix representation of the playing board."""
-    # ...
+    """
+    Optimized adjacency matrix representation of the playing board,
+    that works with an external dictionary of board tiles.
+    """
+
+    def __init__(self, max_size: int):
+        self.size = max_size
+        # Distance matrix: initialize with infinity, diagonal set to 0.
+        self.matrix = np.full((self.size, self.size), np.inf)
+        np.fill_diagonal(self.matrix, 0)
+        # Vertex data: Each row holds [x, y, tile_id]. Uninitialized rows are [-1, -1, -1].
+        self.vertex_data = np.full((self.size, 3), -1, dtype=int)
     
     def kruskals_msf(self, active_tiles: dict, max_weight: float):
-        """Computes a minimum spanning forest with a max weight threshold."""
-        # Algorithm implementation
+        """
+        Computes a minimum spanning forest with a max weight threshold.
+        'active_tiles' is a dictionary {tile_id: Tile}.
+        """
+
+        active_ids = np.array(list(active_tiles.keys()), dtype=int)
+        if active_ids.size == 0:
+            return []
+        
+        submatrix = self.matrix[np.ix_(active_ids, active_ids)]
+        triu_idx = np.triu_indices_from(submatrix, k=1)
+        edges = np.column_stack((active_ids[triu_idx[0]], active_ids[triu_idx[1]]))
+        weights = submatrix[triu_idx]
+        
+        valid = weights <= max_weight
+        edges, weights = edges[valid], weights[valid]
+        sorted_indices = np.argsort(weights)
+        edges, weights = edges[sorted_indices], weights[sorted_indices]
+        
+        parent = np.arange(self.size)
+        rank = np.zeros(self.size, dtype=int)
+        
+        def find(i):
+            if parent[i] != i:
+                parent[i] = find(parent[i])
+            return parent[i]
+        
+        def union(x, y):
+            root_x, root_y = find(x), find(y)
+            if root_x != root_y:
+                if rank[root_x] < rank[root_y]:
+                    parent[root_x] = root_y
+                elif rank[root_x] > rank[root_y]:
+                    parent[root_y] = root_x
+                else:
+                    parent[root_y] = root_x
+                    rank[root_x] += 1
+        
+        edge_used = []
+        for u, v in edges:
+            if find(u) != find(v):
+                union(u, v)
+                edge_used.append((u, v, self.matrix[u, v]))
+        
+        forest_map = {}
+        for tid in active_ids:
+            root = find(tid)
+            if root not in forest_map:
+                forest_map[root] = []
+            forest_map[root].append(tid)
+        
+        forests = [(vertices, [(u, v, self.matrix[u, v])
+                    for u, v, _ in edge_used if u in vertices or v in vertices])
+                   for vertices in forest_map.values()]
+        return forests
 ```
 - Uses an **adjacency matrix** representation for spatial relationships between tiles
 - Employs **Kruskal's minimum spanning forest algorithm** to identify connected tile sets
@@ -329,15 +392,54 @@ The menu system (menu.py) provides a comprehensive user interface for game setup
 
 ```python
 class SetupMenu:
-    """Initial game setup and home screen with comprehensive game information 
-    and visual examples of gameplay elements."""
-    
+    """
+    Initial game setup and home screen with comprehensive game information 
+    and visual examples of gameplay elements.
+    """
+
     def __init__(self, game, end_message=None):
-        # Initialize menu components
+        self.game = game
+        self.current_page = "MAIN"  # Track which page we're viewing
+        
+        # Define a custom theme with the game's color scheme
+        custom_theme = themes.THEME_DARK.copy()
+        custom_theme.background_color = (0, 100, 50)  # Richer green background
+        custom_theme.title_font_size = 60
+        custom_theme.widget_font_size = 36
+        custom_theme.widget_font_color = (255, 255, 255)
+        
+        # Create the main menu
+        self.menu = pygame_menu.Menu(
+            title="Rummikub",
+            height=game.screen.get_height(),
+            width=game.screen.get_width(),
+            theme=custom_theme
+        )
+        
+        # Store references to different "pages" (menus)
+        self.menus = {
+            "MAIN": self.menu,
+            "RULES": self._create_rules_menu(),
+            "EXAMPLES": self._create_examples_menu(),
+            "SETUP": self._create_setup_menu()
+        }
+        
+        # Initialize the main menu
+        self._setup_main_menu(end_message)
+        
+        # Set initial menu based on context
+        if end_message:
+            self.current_page = "SETUP"
+            self.menu = self.menus["SETUP"]
         
     def _create_rules_menu(self):
         """Create the rules page."""
-        # Rules menu implementation
+        rules_menu = pygame_menu.Menu(
+            title="Game Rules",
+            height=self.game.screen.get_height(),
+            width=self.game.screen.get_width(),
+            theme=self.menu.get_theme()
+        )
 ```
 - **Multi-page design**: Separate pages for rules, examples, and player setup
 - **Visual examples**: Demonstrates valid tile sets with visual examples
@@ -360,7 +462,18 @@ def draw_button(cls, surface: pygame.Surface, rect: pygame.Rect, text: str,
                color_name: str = 'button', text_color: str = 'button_text',
                hover: bool = False) -> None:
     """Draw a themed button on the given surface."""
-    # Button rendering implementation
+    # Draw button background
+    bg_color = cls.get_color('button_hover' if hover else color_name)
+    pygame.draw.rect(surface, bg_color, rect, border_radius=10)
+    
+    # Draw button border
+    border_color = cls.get_color('highlight' if hover else 'tile_border')
+    pygame.draw.rect(surface, border_color, rect, width=2, border_radius=10)
+    
+    # Draw button text
+    text_surf = cls.render_text(text, 'button', text_color)
+    text_rect = text_surf.get_rect(center=rect.center)
+    surface.blit(text_surf, text_rect)
 ```
 - **Consistent styling**: Unified color palette and font settings
 - **Dynamic effects**: Hover states and animations
@@ -419,12 +532,36 @@ def validate_turn(self) -> bool:
 The MessageSystem provides informative feedback:
 
 ```python
-class Message:
-    """Represents a game message with fade-in/fade-out effects."""
+class MessageSystem:
+    """Manages game messages and notifications."""
     
-    def __init__(self, text: str, duration: float = 3.0, color_name: str = 'text',
-                font_name: str = 'normal', position: Tuple[int, int] = None):
-        # Message initialization
+    def __init__(self):
+        self.messages: List[Message] = []
+        self.max_messages = 3
+        self.vertical_spacing = 50
+    
+    def add_message(self, text: str, duration: float = 3.0, color_name: str = 'text',
+                   font_name: str = 'normal', position: Tuple[int, int] = None) -> None:
+        """Add a new message to the system."""
+        self.messages.append(Message(text, duration, color_name, font_name, position))
+        
+        # Trim excess messages
+        if len(self.messages) > self.max_messages:
+            self.messages.pop(0)
+    
+    def update(self) -> None:
+        """Update all active messages, removing expired ones."""
+        self.messages = [msg for msg in self.messages if msg.update()]
+    
+    def draw(self, surface: pygame.Surface) -> None:
+        """Draw all active messages to the screen."""
+        for i, message in enumerate(self.messages):
+            y_pos = 100 + i * self.vertical_spacing
+            message.draw(surface, default_y=y_pos)
+    
+    def clear(self) -> None:
+        """Clear all messages."""
+        self.messages.clear()
 ```
 - **Temporal management**: Messages appear and disappear automatically
 - **Fade effects**: Smooth transitions with alpha blending
