@@ -112,6 +112,8 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
     </tr>
 </table>
 
+<br>
+
 ## Installation
 
 ### Using Conda (Recommended)
