@@ -112,8 +112,77 @@ Rummikub challenges players to strategically place tiles in valid combinations, 
     </tr>
 </table>
 
-<br>
+## Installation
 
+### Using Conda (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/ConnorBaldes/rummikub.git
+cd rummikub
+
+# Create the conda environment
+conda env create -f environment.yaml
+
+# Activate the environment
+conda activate rummikub
+```
+
+### Using Pip
+```bash
+# Clone the repository
+git clone https://github.com/ConnorBaldes/rummikub.git
+cd rummikub
+
+# Create a virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+## Running the Game
+```bash
+python main.py
+```
+The game will initialize and display the main menu where you can start a new game, adjust settings, or view instructions.
+
+## Testing
+This project uses pytest for unit testing, integration testing, and functional testing. The test suite ensures the game components work correctly individually and together.
+
+### Test Structure
+Tests are organized into the following directories:
+- tests/unit/: Contains unit tests for individual components
+- tests/integration/: Contains tests that verify multiple components work together
+- tests/functional/: Contains functional tests for higher-level game behavior
+
+### Running Tests
+```bash
+# You can run the entire test suite with:
+python run_tests.py
+
+# Or use pytest directly:
+pytest
+
+# To run a specific test file:
+pytest tests/unit/test_tile.py
+
+# To run a specific test:
+pytest tests/unit/test_tile.py::TestTile::test_resize_image
+```
+
+### Test Coverage
+```bash
+# Run the tests with coverage:
+pytest --cov=rummikub
+
+# Generate an HTML coverage report:
+pytest --cov=rummikub --cov-report=html
+```
+Then open htmlcov/index.html in your browser to view the report.
+
+<br>
 
 # Technical Architecture & Design
 
@@ -226,89 +295,7 @@ tests/
   </tr>
 </table>
 
-## Installation
 
-### Using Conda (Recommended)
-
-```bash
-# Clone the repository
-git clone https://github.com/ConnorBaldes/rummikub.git
-cd rummikub
-
-# Create the conda environment
-conda env create -f environment.yaml
-
-# Activate the environment
-conda activate rummikub
-```
-
-### Using Pip
-```bash
-# Clone the repository
-git clone https://github.com/ConnorBaldes/rummikub.git
-cd rummikub
-
-# Create a virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-## Running the Game
-```bash
-python main.py
-```
-The game will initialize and display the main menu where you can start a new game, adjust settings, or view instructions.
-
-## Testing
-This project uses pytest for unit testing, integration testing, and functional testing. The test suite ensures the game components work correctly individually and together.
-
-### Test Structure
-Tests are organized into the following directories:
-- tests/unit/: Contains unit tests for individual components
-- tests/integration/: Contains tests that verify multiple components work together
-- tests/functional/: Contains functional tests for higher-level game behavior
-
-### Running Tests
-
-You can run the entire test suite with:
-```bash
-python run_tests.py
-```
-
-Or use pytest directly:
-```bash
-pytest
-```
-To run a specific test file:
-```bash
-pytest tests/unit/test_tile.py
-```
-
-To run a specific test:
-```bash
-pytest tests/unit/test_tile.py::TestTile::test_resize_image
-```
-
-<br>
-
-### Test Coverage
-Run the tests with coverage:
-
-```bash
-pytest --cov=rummikub
-```
-
-Generate an HTML coverage report:
-```bash
-pytest --cov=rummikub --cov-report=html
-```
-
-Then open htmlcov/index.html in your browser to view the report.
-
-<br>
 
 ## Graph-Based Set Detection
 The most technically complex aspect is the implementation of a graph-based algorithm for detecting valid Rummikub sets:
